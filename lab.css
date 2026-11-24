@@ -470,3 +470,6 @@ body, .emotion small, .emotion .id, .instructions, .effect-help,
 #result-description, #result-evidence, #result-feelings,
 .result-footnote, .result-shares, .site-info { font-weight: 400; }
 #kr-intro#kr-intro { font-family: var(--mono); }
+
+/* Keep the final emotion artwork in its original colors. */
+#result-artwork-preview canvas { filter: none; }
