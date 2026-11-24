@@ -1,120 +1,243 @@
 "use strict";
-
-// Each row records the vertical bounds and horizontal separators between
-// motifs on the supplied sheet. Different rows have different column widths.
-const motifSheets={
-  E01:{file:"lostness",rows:[
-    [16,209,[15,237,392,530,660,763,880,1000]],
-    [216,329,[29,183,324,452,589,729,863,985]],
-    [336,439,[30,143,296,436,564,722,851,989]],
-    [449,495,[29,183,343,521,677,815,991]],
-    [503,644,[16,195,322,431,571,717,861,996]]
-  ]},
-  E02:{file:"overload",rows:[
-    [42,205,[12,193,392,580,770,952]],
-    [210,368,[12,193,392,580,770,952]],
-    [374,528,[12,193,392,580,770,952]],
-    [531,701,[12,193,392,580,770,952]]
-  ]},
-  E03:{file:"excitement",rows:[
-    [48,213,[18,185,337,494,650,806,964]],
-    [216,382,[18,185,337,494,650,806,964]],
-    [386,525,[18,185,337,494,650,806,964]],
-    [530,680,[18,185,337,494,650,806,964]]
-  ]},
-  E04:{file:"liberation",rows:[
-    [16,225,[32,244,391,544,698,851,961,1064]],
-    [229,335,[31,138,240,343,450,550,651,757,852,964,1060]],
-    [358,402,[35,184,343,482,636,777,929,1059]],
-    [420,530,[39,88,153,219,321,373,443,541,641,774,920,1062]],
-    [552,679,[33,158,278,432,682,885,1063]]
-  ]},
-  E05:{file:"affection",rows:[
-    [16,269,[23,294,465,643,792,930,1068]],
-    [297,368,[25,106,196,291,374,473,518,553,608,688,771,911,1070]],
-    [398,517,[27,206,400,565,735,833,913,1067]],
-    [536,695,[18,162,327,502,641,834,1072]]
-  ]},
-  E06:{file:"pride",rows:[
-    [20,211,[36,249,407,563,711,826,936,1067]],
-    [214,312,[45,166,302,448,571,699,833,960,1074]],
-    [322,441,[14,372,609,870,1082]],
-    [446,527,[25,204,393,579,783,903,983,1084]],
-    [535,694,[14,215,379,545,638,819,1093]]
-  ]}
+// Individual PNG files from the supplied element pack, grouped by emotion.
+const motifFiles = {
+  "E05": [
+    "elements/set01_cyan/set01_cyan_001.png",
+    "elements/set01_cyan/set01_cyan_002.png",
+    "elements/set01_cyan/set01_cyan_003.png",
+    "elements/set01_cyan/set01_cyan_004.png",
+    "elements/set01_cyan/set01_cyan_005.png",
+    "elements/set01_cyan/set01_cyan_006.png",
+    "elements/set01_cyan/set01_cyan_007.png",
+    "elements/set01_cyan/set01_cyan_008.png",
+    "elements/set01_cyan/set01_cyan_009.png",
+    "elements/set01_cyan/set01_cyan_010.png",
+    "elements/set01_cyan/set01_cyan_011.png",
+    "elements/set01_cyan/set01_cyan_012.png",
+    "elements/set01_cyan/set01_cyan_013.png",
+    "elements/set01_cyan/set01_cyan_014.png",
+    "elements/set01_cyan/set01_cyan_015.png",
+    "elements/set01_cyan/set01_cyan_016.png",
+    "elements/set01_cyan/set01_cyan_017.png",
+    "elements/set01_cyan/set01_cyan_018.png",
+    "elements/set01_cyan/set01_cyan_019.png",
+    "elements/set01_cyan/set01_cyan_020.png",
+    "elements/set01_cyan/set01_cyan_021.png",
+    "elements/set01_cyan/set01_cyan_022.png",
+    "elements/set01_cyan/set01_cyan_023.png",
+    "elements/set01_cyan/set01_cyan_024.png",
+    "elements/set01_cyan/set01_cyan_025.png",
+    "elements/set01_cyan/set01_cyan_026.png",
+    "elements/set01_cyan/set01_cyan_027.png",
+    "elements/set01_cyan/set01_cyan_028.png",
+    "elements/set01_cyan/set01_cyan_029.png",
+    "elements/set01_cyan/set01_cyan_030.png",
+    "elements/set01_cyan/set01_cyan_031.png",
+    "elements/set01_cyan/set01_cyan_032.png",
+    "elements/set01_cyan/set01_cyan_033.png",
+    "elements/set01_cyan/set01_cyan_034.png"
+  ],
+  "E03": [
+    "elements/set02_pink/set02_pink_001.png",
+    "elements/set02_pink/set02_pink_002.png",
+    "elements/set02_pink/set02_pink_003.png",
+    "elements/set02_pink/set02_pink_004.png",
+    "elements/set02_pink/set02_pink_005.png",
+    "elements/set02_pink/set02_pink_006.png",
+    "elements/set02_pink/set02_pink_007.png",
+    "elements/set02_pink/set02_pink_008.png",
+    "elements/set02_pink/set02_pink_009.png",
+    "elements/set02_pink/set02_pink_010.png",
+    "elements/set02_pink/set02_pink_011.png",
+    "elements/set02_pink/set02_pink_012.png",
+    "elements/set02_pink/set02_pink_013.png",
+    "elements/set02_pink/set02_pink_014.png",
+    "elements/set02_pink/set02_pink_015.png",
+    "elements/set02_pink/set02_pink_016.png",
+    "elements/set02_pink/set02_pink_017.png",
+    "elements/set02_pink/set02_pink_018.png",
+    "elements/set02_pink/set02_pink_019.png",
+    "elements/set02_pink/set02_pink_020.png",
+    "elements/set02_pink/set02_pink_021.png",
+    "elements/set02_pink/set02_pink_022.png",
+    "elements/set02_pink/set02_pink_023.png",
+    "elements/set02_pink/set02_pink_024.png"
+  ],
+  "E04": [
+    "elements/set03_white/set03_white_001.png",
+    "elements/set03_white/set03_white_002.png",
+    "elements/set03_white/set03_white_003.png",
+    "elements/set03_white/set03_white_004.png",
+    "elements/set03_white/set03_white_005.png",
+    "elements/set03_white/set03_white_006.png",
+    "elements/set03_white/set03_white_007.png",
+    "elements/set03_white/set03_white_008.png",
+    "elements/set03_white/set03_white_009.png",
+    "elements/set03_white/set03_white_010.png",
+    "elements/set03_white/set03_white_011.png",
+    "elements/set03_white/set03_white_012.png",
+    "elements/set03_white/set03_white_013.png",
+    "elements/set03_white/set03_white_014.png",
+    "elements/set03_white/set03_white_015.png",
+    "elements/set03_white/set03_white_016.png",
+    "elements/set03_white/set03_white_017.png",
+    "elements/set03_white/set03_white_018.png",
+    "elements/set03_white/set03_white_019.png",
+    "elements/set03_white/set03_white_020.png",
+    "elements/set03_white/set03_white_021.png",
+    "elements/set03_white/set03_white_022.png",
+    "elements/set03_white/set03_white_023.png",
+    "elements/set03_white/set03_white_024.png",
+    "elements/set03_white/set03_white_025.png",
+    "elements/set03_white/set03_white_026.png",
+    "elements/set03_white/set03_white_027.png",
+    "elements/set03_white/set03_white_028.png",
+    "elements/set03_white/set03_white_029.png",
+    "elements/set03_white/set03_white_030.png",
+    "elements/set03_white/set03_white_031.png",
+    "elements/set03_white/set03_white_032.png",
+    "elements/set03_white/set03_white_033.png",
+    "elements/set03_white/set03_white_034.png",
+    "elements/set03_white/set03_white_035.png",
+    "elements/set03_white/set03_white_036.png",
+    "elements/set03_white/set03_white_037.png",
+    "elements/set03_white/set03_white_038.png",
+    "elements/set03_white/set03_white_039.png",
+    "elements/set03_white/set03_white_040.png",
+    "elements/set03_white/set03_white_041.png"
+  ],
+  "E01": [
+    "elements/set04_blue/set04_blue_001.png",
+    "elements/set04_blue/set04_blue_002.png",
+    "elements/set04_blue/set04_blue_003.png",
+    "elements/set04_blue/set04_blue_004.png",
+    "elements/set04_blue/set04_blue_005.png",
+    "elements/set04_blue/set04_blue_006.png",
+    "elements/set04_blue/set04_blue_007.png",
+    "elements/set04_blue/set04_blue_008.png",
+    "elements/set04_blue/set04_blue_009.png",
+    "elements/set04_blue/set04_blue_010.png",
+    "elements/set04_blue/set04_blue_011.png",
+    "elements/set04_blue/set04_blue_012.png",
+    "elements/set04_blue/set04_blue_013.png",
+    "elements/set04_blue/set04_blue_014.png",
+    "elements/set04_blue/set04_blue_015.png",
+    "elements/set04_blue/set04_blue_016.png",
+    "elements/set04_blue/set04_blue_017.png",
+    "elements/set04_blue/set04_blue_018.png",
+    "elements/set04_blue/set04_blue_019.png",
+    "elements/set04_blue/set04_blue_020.png",
+    "elements/set04_blue/set04_blue_021.png",
+    "elements/set04_blue/set04_blue_022.png",
+    "elements/set04_blue/set04_blue_023.png",
+    "elements/set04_blue/set04_blue_024.png",
+    "elements/set04_blue/set04_blue_025.png",
+    "elements/set04_blue/set04_blue_026.png",
+    "elements/set04_blue/set04_blue_027.png",
+    "elements/set04_blue/set04_blue_028.png",
+    "elements/set04_blue/set04_blue_029.png",
+    "elements/set04_blue/set04_blue_030.png"
+  ],
+  "E02": [
+    "elements/set05_redyellow/set05_redyellow_001.png",
+    "elements/set05_redyellow/set05_redyellow_002.png",
+    "elements/set05_redyellow/set05_redyellow_003.png",
+    "elements/set05_redyellow/set05_redyellow_004.png",
+    "elements/set05_redyellow/set05_redyellow_005.png",
+    "elements/set05_redyellow/set05_redyellow_006.png",
+    "elements/set05_redyellow/set05_redyellow_007.png",
+    "elements/set05_redyellow/set05_redyellow_008.png",
+    "elements/set05_redyellow/set05_redyellow_009.png",
+    "elements/set05_redyellow/set05_redyellow_010.png",
+    "elements/set05_redyellow/set05_redyellow_011.png",
+    "elements/set05_redyellow/set05_redyellow_012.png",
+    "elements/set05_redyellow/set05_redyellow_013.png",
+    "elements/set05_redyellow/set05_redyellow_014.png",
+    "elements/set05_redyellow/set05_redyellow_015.png",
+    "elements/set05_redyellow/set05_redyellow_016.png",
+    "elements/set05_redyellow/set05_redyellow_017.png",
+    "elements/set05_redyellow/set05_redyellow_018.png",
+    "elements/set05_redyellow/set05_redyellow_019.png",
+    "elements/set05_redyellow/set05_redyellow_020.png"
+  ],
+  "E06": [
+    "elements/set06_red/set06_red_001.png",
+    "elements/set06_red/set06_red_002.png",
+    "elements/set06_red/set06_red_003.png",
+    "elements/set06_red/set06_red_004.png",
+    "elements/set06_red/set06_red_005.png",
+    "elements/set06_red/set06_red_006.png",
+    "elements/set06_red/set06_red_007.png",
+    "elements/set06_red/set06_red_008.png",
+    "elements/set06_red/set06_red_009.png",
+    "elements/set06_red/set06_red_010.png",
+    "elements/set06_red/set06_red_011.png",
+    "elements/set06_red/set06_red_012.png",
+    "elements/set06_red/set06_red_013.png",
+    "elements/set06_red/set06_red_014.png",
+    "elements/set06_red/set06_red_015.png",
+    "elements/set06_red/set06_red_016.png",
+    "elements/set06_red/set06_red_017.png",
+    "elements/set06_red/set06_red_018.png",
+    "elements/set06_red/set06_red_019.png",
+    "elements/set06_red/set06_red_020.png",
+    "elements/set06_red/set06_red_021.png",
+    "elements/set06_red/set06_red_022.png",
+    "elements/set06_red/set06_red_023.png",
+    "elements/set06_red/set06_red_024.png",
+    "elements/set06_red/set06_red_025.png",
+    "elements/set06_red/set06_red_026.png",
+    "elements/set06_red/set06_red_027.png",
+    "elements/set06_red/set06_red_028.png",
+    "elements/set06_red/set06_red_029.png",
+    "elements/set06_red/set06_red_030.png"
+  ]
 };
 
-function prepareMotifs(image,rows){
-  const sheet=document.createElement("canvas");
-  sheet.width=image.naturalWidth;
-  sheet.height=image.naturalHeight;
-  const source=sheet.getContext("2d",{willReadFrequently:true});
-  source.drawImage(image,0,0);
-  const grouped=rows.map(([top,bottom,edges])=>edges.slice(1).map((right,index)=>{
-    const left=edges[index];
-    return extractMotif(source.getImageData(left,top,right-left,bottom-top));
+async function loadMotifs(id) {
+  const files = motifFiles[id] || [];
+  const results = await Promise.allSettled(files.map(async path => {
+    const image = new Image();
+    image.src = new URL(path, document.baseURI).href;
+    await image.decode();
+    return prepareIndividualMotif(image);
   }));
-  // Alternate rows so early clicks reveal different kinds of geometry.
-  const motifs=[];
-  const columns=Math.max(...grouped.map(row=>row.length));
-  for(let column=0;column<columns;column++){
-    for(const row of grouped)if(row[column])motifs.push(row[column]);
-  }
-  return motifs;
+  const textures = results.filter(r => r.status === "fulfilled" && r.value).map(r => r.value);
+  const missing = results.length - textures.length;
+  if (missing) console.warn(id + ": " + missing + " element PNGs failed to load");
+  if (!textures.length) throw new Error("Missing motifs in " + id);
+  return {textures, missing};
 }
 
-function removeBlackMatte(data,offset) {
-  const peak=Math.max(data[offset],data[offset+1],data[offset+2]);
-  if(peak<=5 || data[offset+3]===0){
-    data.fill(0,offset,offset+4);
-    return 0;
+function prepareIndividualMotif(image) {
+  const texture = document.createElement("canvas");
+  const gray = document.createElement("canvas");
+  texture.width = gray.width = image.naturalWidth;
+  texture.height = gray.height = image.naturalHeight;
+  const pen = texture.getContext("2d");
+  pen.drawImage(image, 0, 0);
+  const pixels = pen.getImageData(0, 0, texture.width, texture.height);
+  const data = pixels.data;
+  let peak = 0;
+  // The supplied PNG pack stores original black-background RGB and uses
+  // max(R,G,B) as alpha. Undo this double attenuation for screen blending.
+  for (let i = 0; i < data.length; i += 4) {
+    const a = data[i + 3];
+    if (!a) continue;
+    peak = Math.max(peak, a / 255);
+    for (let c = 0; c < 3; c++) data[i+c] = Math.min(255, Math.round(data[i+c] * 255 / a));
   }
-  const strength=peak/255;
-  // Suppress near-black background noise, then carry the light level in
-  // alpha so the recovered colors can be placed over any other fragment.
-  const coverage=Math.min(1,(peak-5)/13);
-  const alpha=Math.round(data[offset+3]*strength*coverage);
-  if(!alpha){
-    data.fill(0,offset,offset+4);
-    return 0;
+  if (!peak) return null;
+  pen.putImageData(pixels, 0, 0);
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i+3]) data[i] = data[i+1] = data[i+2] = 255;
   }
-  data[offset]/=strength;
-  data[offset+1]/=strength;
-  data[offset+2]/=strength;
-  data[offset+3]=alpha;
-  return alpha;
+  gray.getContext("2d").putImageData(pixels, 0, 0);
+  return {texture, gray, peak};
 }
 
-function extractMotif(pixels) {
-  const {data,width,height}=pixels;
-  let left=width,right=-1,top=height,bottom=-1,peak=0;
-  for(let y=0;y<height;y++){
-    for(let x=0;x<width;x++){
-      const i=(y*width+x)*4;
-      const alpha=removeBlackMatte(data,i);
-      if(!alpha)continue;
-      left=Math.min(left,x);right=Math.max(right,x);
-      top=Math.min(top,y);bottom=Math.max(bottom,y);
-      peak=Math.max(peak,alpha/255);
-    }
-  }
-  if(right<left)return null;
-  left=Math.max(0,left-2);top=Math.max(0,top-2);
-  right=Math.min(width-1,right+2);bottom=Math.min(height-1,bottom+2);
-  const texture=document.createElement("canvas"),gray=document.createElement("canvas");
-  texture.width=gray.width=right-left+1;
-  texture.height=gray.height=bottom-top+1;
-  const pen=texture.getContext("2d"),mono=gray.getContext("2d");
-  pen.putImageData(pixels,-left,-top,left,top,texture.width,texture.height);
-  for(let i=0;i<data.length;i+=4){
-    if(data[i+3])data[i]=data[i+1]=data[i+2]=255;
-  }
-  mono.putImageData(pixels,-left,-top,left,top,gray.width,gray.height);
-  return {texture,gray,peak};
-}
-
-function drawMotif(pen,texture,size,dx=0,dy=0) {
-  const scale=size/Math.max(texture.width,texture.height);
-  const width=texture.width*scale,height=texture.height*scale;
-  pen.drawImage(texture,-width/2+dx,-height/2+dy,width,height);
+function drawMotif(pen, texture, size, dx=0, dy=0) {
+  const scale = size / Math.max(texture.width, texture.height);
+  const width = texture.width * scale, height = texture.height * scale;
+  pen.drawImage(texture, -width/2+dx, -height/2+dy, width, height);
 }

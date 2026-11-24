@@ -216,18 +216,15 @@ async function prepareSamples(){
     },650);
   });
   const loads=samples.map(async sample=>{
-    const image=new Image();
-    const sheet=motifSheets[sample.id];
-    image.src = "./" + sheet.file + ".png";
-    await image.decode();
-    sample.textures=prepareMotifs(image,sheet.rows);
-    if(!sample.textures.length)throw new Error("Missing motifs in "+sample.id);
+    const {textures, missing}=await loadMotifs(sample.id);
+    sample.textures=textures;
     sample.nextTexture=0;
     sample.loadedAt=performance.now();
     sample.button.disabled=false;
+    return missing;
   });
   const [results]=await Promise.all([Promise.allSettled(loads),deadline]);
-  if(message[0]==="loading")notify(results.some(result=>result.status==="rejected")?"partial":"loaded");
+  if(message[0]==="loading")notify(results.some(result=>result.status==="rejected" || result.value>0)?"partial":"loaded");
   sync();
 }
 
