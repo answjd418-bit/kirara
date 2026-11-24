@@ -473,3 +473,13 @@ body, .emotion small, .emotion .id, .instructions, .effect-help,
 
 /* Keep the final emotion artwork in its original colors. */
 #result-artwork-preview canvas { filter: none; }
+
+/* Interactive result viewer; retain the original canvas for 2D fallback and export. */
+#result-artwork-preview {position:relative;overflow:hidden;}
+#result-artwork-preview.has-3d > canvas {visibility:hidden;}
+#result-artwork-preview .emotion-3d-host {position:absolute;inset:0;overflow:hidden;touch-action:none;}
+#result-artwork-preview .emotion-3d-host canvas {width:100%;height:100%;display:block;touch-action:none;filter:none;cursor:grab;}
+#result-artwork-preview .emotion-3d-host canvas:active {cursor:grabbing;}
+.emotion-3d-host .asset-controls {position:absolute;bottom:12px;right:12px;display:flex;gap:8px;}
+.emotion-3d-host .asset-controls button {border:1px solid #666;background:#000c;color:#ddd;padding:.4rem .6rem;font:400 .75rem var(--mono);}
+.emotion-3d-host .asset-controls button:hover {color:var(--mint);border-color:var(--mint);}

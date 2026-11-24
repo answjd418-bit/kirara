@@ -10,6 +10,35 @@ const signalToggle = $("#signal-toggle");
 const signalDelta = $("#signal-delta");
 const resultDialog = $("#result-dialog");
 const resultArtworkPreview = $("#result-artwork-preview");
+let emotionViewer=null, emotionHost=null, emotionRequest=0;
+function stopEmotionViewer(){
+  emotionRequest++;
+  emotionViewer?.dispose(); emotionViewer=null;
+  emotionHost?.remove(); emotionHost=null;
+  resultArtworkPreview.classList.remove("has-3d");
+}
+async function startEmotionViewer(){
+  stopEmotionViewer();
+  const result=cells.get(selected)?.result;
+  if(!result||!resultDialog.open)return;
+  const request=emotionRequest;
+  const host=document.createElement("div");
+  host.className="emotion-3d-host";
+  host.style.visibility="hidden";
+  emotionHost=host;resultArtworkPreview.append(host);
+  try{
+    const {mountEmotion}=await import("./emotion-3d.js");
+    if(request!==emotionRequest||!resultDialog.open)return;
+    const viewer=await mountEmotion(host,result);
+    if(request!==emotionRequest||!resultDialog.open){viewer.dispose();return;}
+    emotionViewer=viewer;host.style.visibility="visible";
+    resultArtworkPreview.classList.add("has-3d");
+  }catch(error){
+    if(request===emotionRequest){stopEmotionViewer();console.warn("3D viewer unavailable; showing original graphic",error);}
+  }
+}
+resultDialog.addEventListener("close",stopEmotionViewer);
+
 const resultArtwork = document.createElement("canvas");
 const resultArtworkPen = resultArtwork.getContext("2d");
 const eScanOverlay = $("#e-scan-overlay");
@@ -715,7 +744,7 @@ function animate(now){
       }
     }
   }
-  if(resultDialog.open&&!motion.matches){
+  if(resultDialog.open&&!motion.matches&&!emotionViewer){
     const cell=cells.get(selected);
     const {frame,offsetX,offsetY}=cell.result;
     resultArtworkPen.clearRect(0,0,resultArtwork.width,resultArtwork.height);
@@ -824,7 +853,7 @@ function showExperiment(slot){
   };
   notify("resultReady",slot);
   sync();
-  if(!resultDialog.open)resultDialog.showModal();
+  if(!resultDialog.open){resultDialog.showModal();startEmotionViewer();}
 }
 
 function finishScan(){
@@ -869,7 +898,7 @@ function startScan(event){
 for(const button of [scanButton,runButton])button.addEventListener("click",startScan);
 
 $("#show-result").addEventListener("click",()=>{
-  if(!resultDialog.open)resultDialog.showModal();
+  if(!resultDialog.open){resultDialog.showModal();startEmotionViewer();}
 });
 
 saveResultPng.addEventListener("click",()=>{
