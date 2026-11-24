@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<!-- saved from url=(0060)https://kirara-emotion-lab-v1.workspace-078135.chatgpt.site/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#070708">
+  <meta name="description" content="Choose a cell, combine fragments from six emotion graphics, and observe how the composition changes the signal.">
+  <title>KIRARA : LAB — Emotion Fragment Experiment</title>
+  <link rel="stylesheet" href="./KIRARA _ LAB — Emotion Fragment Experiment_files/lab.css">
+  <link rel="stylesheet" href="./KIRARA _ LAB — Emotion Fragment Experiment_files/layout-v1.css">
+  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/signal.js" defer=""></script>
+  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/interpretation.js" defer=""></script>
+  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/motifs.js" defer=""></script>
+  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/audio.js" defer=""></script>
+  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/crt-intro.js" defer=""></script>
+  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/lab.js" defer=""></script>
+</head>
+<body>
+  <dialog id="lab-opening" class="crt-opening" aria-label="Terminal opening">
+    <div id="crt-intro" tabindex="-1"></div>
+  </dialog>
+  <header class="masthead">
+    <div><a class="brand" href="https://kirara-emotion-lab-v1.workspace-078135.chatgpt.site/">KIRARA <i>:</i> LAB</a><h1>EMOTION ELEMENT EXPERIMENT</h1></div>
+    <div class="mast-tools">
+      <p>// EMOTION FRAGMENTS / VISUAL EXPERIMENT</p>
+      <div class="locale" role="group" aria-label="Language / 언어">
+        <button type="button" data-lang="en" aria-pressed="true" lang="en">EN</button>
+        <button type="button" data-lang="ko" aria-pressed="false" lang="ko">한국어</button>
+      </div>
+    </div>
+  </header>
+  <main class="lab">
+    <aside class="console" aria-labelledby="console-heading">
+      <div class="console-panel">
+        <h2 id="console-heading" data-ko="&gt; 감정 콘솔">&gt; EMOTION CONSOLE</h2>
+        <p class="instructions" data-ko="네모칸을 고른 뒤 아래 감정을 눌러 조각을 겹쳐 보세요.">Select a cell. Click an emotion to add its fragment. Repeat to mix.</p>
+        <dl class="telemetry">
+          <div><dt>fps</dt><dd id="console-fps">39</dd></div>
+          <div><dt data-ko="조각">fragments</dt><dd id="console-fragments">00</dd></div>
+        </dl>
+        <div class="target"><span data-ko="선택한 칸">ACTIVE CELL</span><strong id="target">A</strong></div>
+        <div class="console-tools">
+          <button id="undo" aria-keyshortcuts="Z" type="button" disabled=""><kbd aria-hidden="true">Z</kbd><span data-ko="마지막 조각 취소">UNDO FRAGMENT</span></button>
+          <button id="clear" aria-keyshortcuts="C" type="button" disabled=""><kbd aria-hidden="true">C</kbd><span data-ko="선택한 칸 비우기">CLEAR ACTIVE CELL</span></button>
+        </div>
+        <div class="signal-controls">
+          <span class="signal-label" data-ko="[ 신호 ]">[ SIGNAL ]</span>
+          <button id="signal-toggle" type="button" aria-pressed="true" aria-keyshortcuts="G" aria-describedby="signal-help">GLITCH ON</button>
+        </div>
+        <output id="signal-delta" aria-hidden="true">Δ 0.00</output>
+        <p class="effect-help" id="signal-help" data-ko="가리키거나 탭하면 색이 나타나요. Δ는 글리치 강도예요.">HOVER / TAP FOR COLOR. Δ SHOWS GLITCH INTENSITY.</p>
+      </div>
+      <div class="console-panel">
+        <div class="dataset-metadata"><span data-ko="소스 그래픽">SOURCE GRAPHICS</span><output>06</output></div>
+        <div id="emotions" class="emotions" aria-label="Emotion fragments"><button class="emotion" type="button" style="--emotion: #48dae9;"><span class="id">E01</span><span>Emotional Lostness</span><small lang="ko">정서적 미아</small></button><button class="emotion" type="button" style="--emotion: #ff7482;"><span class="id">E02</span><span>Overload</span><small lang="ko">과부하</small></button><button class="emotion" type="button" style="--emotion: #f767df;"><span class="id">E03</span><span>Glitched Excitement</span><small lang="ko">고장난 설렘</small></button><button class="emotion" type="button" style="--emotion: #cdf677;"><span class="id">E04</span><span>Chain Liberation</span><small lang="ko">연쇄적 해방감</small></button><button class="emotion" type="button" style="--emotion: #70f5df;"><span class="id">E05</span><span>Unpaid Affection</span><small lang="ko">무급 애정</small></button><button class="emotion" type="button" style="--emotion: #fa7e61;"><span class="id">E06</span><span>Overheated Pride</span><small lang="ko">과열된 자존심</small></button></div>
+      </div>
+      <div class="console-panel console-log">
+        <p id="console-state" class="console-state" role="status">SOURCE FRAGMENTS / READY</p>
+      </div>
+    </aside>
+
+    <section class="stage" id="stage" aria-label="Emotion fragment mixing field">
+      <canvas id="float-field" aria-hidden="true" width="727" height="1050"></canvas>
+      <div class="field-chrome" aria-hidden="true">
+        <span class="cross c1">+</span><span class="cross c2">+</span><span class="cross c3">+</span><span class="cross c4">+</span>
+        <span class="swatch pink"></span><span class="swatch cyan"></span>
+      </div>
+      <button class="cell corners a" type="button" data-slot="A" aria-pressed="true" aria-label="Cell A, fragments: 0"><canvas aria-hidden="true" width="168" height="490"></canvas><span class="cell-label"><b>A</b><output></output></span></button>
+      <button class="cell corners b" type="button" data-slot="B" aria-pressed="false" aria-label="Cell B, fragments: 0"><canvas aria-hidden="true" width="280" height="301"></canvas><span class="cell-label"><b>B</b><output></output></span></button>
+      <button class="cell c" type="button" data-slot="C" aria-pressed="false" aria-label="Cell C, fragments: 0"><canvas aria-hidden="true" width="208" height="301"></canvas><span class="cell-label"><b>C</b><output></output></span></button>
+      <button class="cell d" type="button" data-slot="D" aria-pressed="false" aria-label="Cell D, fragments: 0"><canvas aria-hidden="true" width="168" height="259"></canvas><span class="cell-label"><b>D</b><output></output></span></button>
+      <button class="cell e" type="button" data-slot="E" aria-pressed="false" aria-label="Cell E, fragments: 0"><canvas aria-hidden="true" width="142" height="462"></canvas><canvas id="e-scan-overlay" aria-hidden="true" width="182" height="462"></canvas><span class="cell-label"><b>E</b><output></output></span></button>
+      <button class="cell f" type="button" data-slot="F" aria-pressed="false" aria-label="Cell F, fragments: 0"><canvas aria-hidden="true" width="197" height="490"></canvas><span class="cell-label"><b>F</b><output></output></span></button>
+      <div class="stage-key">
+        <p class="cell-note note-c" data-cell-note="C" data-active="false"><strong>CELL C / EMPTY</strong><small>Select to start a mix.</small></p>
+        <p class="cell-note note-a" data-cell-note="A" data-active="true"><strong>CELL A / ACTIVE</strong><small>Choose an emotion to start.</small></p>
+        <p class="cell-note note-b" data-cell-note="B" data-active="false"><strong>CELL B / EMPTY</strong><small>Select to start a mix.</small></p>
+      </div>
+    </section>
+
+    <aside class="readouts" aria-label="Composition signal">
+      <section class="brain" aria-labelledby="brain-heading" data-tone="idle" style="--signal-color: #81908a;">
+        <div class="brain-main">
+          <h2 id="brain-heading">BRAIN RESPONSE</h2>
+          <p class="simulated" data-ko="시뮬레이션 · 작품 신호">SIMULATED / ART SIGNAL</p>
+          <p id="signal-tone" class="signal-tone">SIGNAL / IDLE</p>
+        </div>
+        <figure class="mri"><img src="./KIRARA _ LAB — Emotion Fragment Experiment_files/brain-sagittal.jpg" alt="Sagittal brain MRI" width="240" height="271"></figure>
+        <dl class="channels">
+          <div><dt id="label-pfc">PFC</dt><dd><output id="value-pfc">0.00</output><meter id="meter-pfc" aria-labelledby="label-pfc" min="0" max="1" value="0"></meter></dd></div>
+          <div><dt id="label-amy">AMY</dt><dd><output id="value-amy">0.00</output><meter id="meter-amy" aria-labelledby="label-amy" min="0" max="1" value="0"></meter></dd></div>
+          <div><dt id="label-acc">ACC</dt><dd><output id="value-acc">0.00</output><meter id="meter-acc" aria-labelledby="label-acc" min="0" max="1" value="0"></meter></dd></div>
+          <div><dt id="label-ins">INS</dt><dd><output id="value-ins">0.00</output><meter id="meter-ins" aria-labelledby="label-ins" min="0" max="1" value="0"></meter></dd></div>
+        </dl>
+        <figure class="scope">
+          <div class="scope-scale" aria-hidden="true"><span>0.0</span><span>0.5</span><span>1.0</span></div>
+          <canvas id="scope" width="232" height="165" aria-hidden="true"></canvas>
+          <figcaption id="scope-caption" data-ko="선택한 칸의 파형">ACTIVE CELL SIGNAL</figcaption>
+        </figure>
+        <details class="signal-info">
+          <summary data-ko="수치는 무엇을 뜻하나요?">WHAT DO THE VALUES MEAN?</summary>
+          <p data-ko="뇌 영역 이름을 빌린 작품 전용 시뮬레이션이에요. PFC는 시각적 균형, AMY는 조각의 밝기, ACC는 서로 다른 감정 조각의 겹침, INS는 맥동을 나타내요.">This is an art simulation named after brain regions. PFC tracks visual balance, AMY brightness, ACC overlap between different fragments, and INS pulse.</p>
+          <p data-ko="차가운 시안과 민트는 열린 방향, 자홍과 주황은 긴장과 강한 움직임을 나타내는 작품의 색 표현이에요.">Cyan and mint suggest openness. Magenta and orange suggest tension and intensity in the artwork.</p>
+        </details>
+      </section>
+      <footer class="run">
+        <div class="run-details">
+          <div id="run-details-scroll" class="run-details-scroll" tabindex="-1">
+            <section id="scan-record" class="scan-record" aria-labelledby="scan-record-title" hidden="">
+              <h2 id="scan-record-title" data-ko="스캔 기록 · 밝기 지도">SCAN RECORD · BRIGHTNESS MAP</h2>
+              <div class="scan-record-body">
+                <canvas id="scan-map" width="192" height="128" aria-hidden="true"></canvas>
+                <dl>
+                  <div><dt data-ko="최고 밝기">Peak brightness</dt><dd id="scan-peak"></dd></div>
+                  <div><dt data-ko="밝은 영역">Bright area</dt><dd id="scan-coverage"></dd></div>
+                </dl>
+              </div>
+              <p data-ko="밝은 영역은 스캔한 칸에서 밝기가 20% 이상인 부분의 비율이에요.">Bright area is the share of the scanned cell at 20% brightness or above.</p>
+            </section>
+            <section id="experiment-result" class="experiment-result" aria-labelledby="result-summary-heading" hidden="">
+              <h2 id="result-summary-heading" data-ko="감정 결과">EMOTION RESULT</h2>
+              <p id="result-summary-title"></p>
+              <button id="show-result" type="button" data-ko="감정 해석 보기">READ INTERPRETATION</button>
+            </section>
+            <section id="recipe" class="recipe" aria-labelledby="recipe-title" hidden="">
+              <h2 id="recipe-title" data-ko="선택한 칸의 조각">FRAGMENTS IN ACTIVE CELL</h2>
+              <ul id="recipe-list"></ul>
+            </section>
+          </div>
+        </div>
+        <p id="mix-label">CELL A / EMPTY</p>
+        <div class="scan-progress" id="scan-progress" hidden="">
+          <progress id="scan-progress-bar" aria-label="MRI-STYLE COMPOSITION SCAN" value="0" max="100"></progress>
+          <output id="scan-progress-value" aria-hidden="true">0%</output>
+        </div>
+        <div class="run-actions">
+          <button id="scan-action" type="button" disabled="" data-ko="스캔 [ X ]" title="Scan the artwork and show its brightness map">SCAN [ X ]</button>
+          <button id="run" type="button" disabled="" data-ko="&gt; 실험 [ RUN ]" title="Scan the composition and open its emotional interpretation">&gt; EXPERIMENT [ RUN ]</button>
+        </div>
+      </footer>
+    </aside>
+  </main>
+  <footer class="site-info"><details><summary data-ko="이미지 출처">IMAGE CREDIT</summary><p><a href="https://commons.wikimedia.org/wiki/File:Sagittal_brain_MRI.jpg" target="_blank" rel="noopener">Genesis12~enwiki</a> · <a href="https://creativecommons.org/licenses/by-sa/2.5/" target="_blank" rel="noopener">CC BY-SA 2.5</a></p></details><details class="sound-credits"><summary data-ko="효과음 출처">SOUND CREDITS</summary><p><a href="https://pixabay.com/sound-effects/film-special-effects-old-radio-button-click-97549/" target="_blank" rel="noopener">pooya.work / Freesound</a> · <a href="https://pixabay.com/es/sound-effects/tecnolog%C3%ADa-digital-click-3-513897/" target="_blank" rel="noopener">ksjsbwuil</a> · <a href="https://pixabay.com/sound-effects/film-special-effects-mouse-click-290204/" target="_blank" rel="noopener">MatthewVakaliuk73627</a> · <a href="https://pixabay.com/nl/sound-effects/film-en-speciale-effecten-click-234708/" target="_blank" rel="noopener">u_8g40a9z0la</a> · <a href="https://pixabay.com/service/license-summary/" target="_blank" rel="noopener">Pixabay Content License</a></p><p>JuniorSoundays · Dragon Studio · Freesound Community</p></details></footer>
+  <dialog id="result-dialog" aria-labelledby="result-title">
+    <form class="result-close" method="dialog"><button type="submit" autofocus="" data-ko="닫기">CLOSE</button></form>
+    <div class="result-body">
+      <div class="result-report-reading">
+        <header class="result-report-header">
+          <p data-ko="감정 실험실 : 실험 결과">EMOTION LAB : experiment result</p>
+          <p id="result-cell"></p>
+          <h2 id="result-title"></h2>
+          <p id="result-feelings"></p>
+        </header>
+        <section class="result-scan" aria-labelledby="result-map-title">
+          <h3 id="result-map-title" data-ko="밝기 지도">BRIGHTNESS MAP</h3>
+          <div class="result-scan-data">
+            <div id="result-map-preview"></div>
+            <dl>
+              <div><dt data-ko="최고 밝기">Peak brightness</dt><dd id="result-map-peak"></dd></div>
+              <div><dt data-ko="밝은 영역">Bright area</dt><dd id="result-map-coverage"></dd></div>
+            </dl>
+          </div>
+        </section>
+        <section class="result-interpretation" aria-labelledby="result-reading-title">
+          <h3 id="result-reading-title" data-ko="감정 판독">EMOTION READING</h3>
+          <p id="result-description"></p>
+          <p id="result-evidence"></p>
+          <p class="result-footnote" data-ko="이 결과는 조각의 구성을 바탕으로 한 예술적 해석이에요.">This is an artistic reading based on the composition of the fragments.</p>
+          <details class="result-shares">
+            <summary data-ko="조각 구성 비율">SHARE OF FRAGMENTS</summary>
+            <ul id="result-sources"></ul>
+          </details>
+        </section>
+        <div class="result-report-actions">
+          <form method="dialog"><button type="submit" data-ko="돌아가기">BACK</button></form>
+          <button id="save-result-png" type="button" data-ko="PNG 저장">SAVE PNG</button>
+        </div>
+        <small id="result-export-status" role="status" hidden=""></small>
+      </div>
+
+      <div class="result-report-plate">
+        <figure class="result-artwork" aria-labelledby="result-artwork-title">
+          <figcaption id="result-artwork-title" data-ko="완성한 감정 그래픽">YOUR EMOTION GRAPHIC</figcaption>
+          <div id="result-artwork-preview"></div>
+        </figure>
+        <dl class="result-signals">
+          <div><dt id="result-balance-label" data-ko="시각적 균형">Visual balance</dt><dd><output></output><meter aria-labelledby="result-balance-label" min="0" max="1" value="0"></meter></dd></div>
+          <div><dt id="result-brightness-label" data-ko="조각 밝기">Fragment brightness</dt><dd><output></output><meter aria-labelledby="result-brightness-label" min="0" max="1" value="0"></meter></dd></div>
+          <div><dt id="result-overlap-label" data-ko="조각 겹침">Fragment overlap</dt><dd><output></output><meter aria-labelledby="result-overlap-label" min="0" max="1" value="0"></meter></dd></div>
+          <div><dt id="result-pulse-label" data-ko="맥동">Pulse</dt><dd><output></output><meter aria-labelledby="result-pulse-label" min="0" max="1" value="0"></meter></dd></div>
+        </dl>
+      </div>
+    </div>
+  </dialog>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5f7a06a3814d1ef',t:'MTc5NTUxNTA1NQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5f7a06a3814d1ef',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; visibility: hidden;" src="./KIRARA _ LAB — Emotion Fragment Experiment_files/saved_resource.html"></iframe>
+
+</body></html>
