@@ -1,4 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Roboto+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600&display=swap');
+
+@font-face {
+  font-family: "Lab Roboto Mono";
+  src: url("fonts/RobotoMono-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Lab Roboto Mono";
+  src: url("fonts/RobotoMono-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
 
 /* Digits only: use the installed OCR A Extended face, or your licensed webfont. */
 @font-face {
@@ -9,11 +24,19 @@
   font-display: swap;
   unicode-range: U+0030-0039;
 }
+@font-face {
+  font-family: "Lab OCR Extended";
+  src: local("OCR A Extended"), local("OCRAExtended"), local("OCR A Extended Regular"), url("fonts/ocra.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
 
 
 
 
-:root{color-scheme:dark;--bg:#070708;--fg:#e6e6e5;--dim:#a3a3a9;--rule:#444548;--mint:#8ff7e0;--digits:"Lab OCR Extended";--mono:var(--digits),"Roboto Mono","Apple SD Gothic Neo",monospace;--title:var(--digits),"IBM Plex Mono","Apple SD Gothic Neo",monospace;font:14px/1.5 var(--mono);color:var(--fg);background:var(--bg)}
+:root{color-scheme:dark;--bg:#070708;--fg:#e6e6e5;--dim:#a3a3a9;--rule:#444548;--mint:#8ff7e0;--digits:"Lab OCR Extended";--mono:var(--digits),"Lab Roboto Mono","Roboto Mono","Apple SD Gothic Neo",monospace;--title:var(--digits),"Lab Roboto Mono","Roboto Mono","Apple SD Gothic Neo",monospace;font:14px/1.5 var(--mono);color:var(--fg);background:var(--bg)}
 html{scrollbar-gutter:stable}
 *{box-sizing:border-box}
 body,p,h1,h2,figure,dl,dd{margin:0}
@@ -407,11 +430,11 @@ canvas{display:block}
 }
 
 
-/* KIRARA typography: OCR digits, IBM Plex Mono keywords, Roboto Mono body. */
+/* KIRARA typography: OCR digits, Roboto Mono SemiBold keywords, Roboto Mono body. */
 :root {
   --digits: "Lab OCR Extended";
-  --mono: var(--digits), "Roboto Mono", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
-  --title: var(--digits), "IBM Plex Mono", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
+  --mono: var(--digits), "Lab Roboto Mono", "Roboto Mono", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
+  --title: var(--digits), "Lab Roboto Mono", "Roboto Mono", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
   font-variant-numeric: tabular-nums;
 }
 body, button, output, summary { font-family: var(--mono); }
@@ -433,3 +456,17 @@ body, button, output, summary { font-family: var(--mono); }
   font-family: var(--mono);
 }
 #kr-intro#kr-intro { font-family: var(--title); }
+
+/* Keep the existing layout; distinguish labels by weight only. */
+.brand, h1, h2, h3, .dataset-metadata > span, .target > span,
+.console-tools button > span, .signal-label, .signal-controls button,
+.run-actions button, .emotion > span:not(.id), .cell-note strong,
+.cell-label b, .channels dt, .signal-tone, .signal-info summary,
+.scope figcaption, .result-report-header > p:first-child, #result-title,
+.result-artwork figcaption, .result-report-actions button,
+.result-close button, #show-result, #mix-label { font-weight: 600; }
+body, .emotion small, .emotion .id, .instructions, .effect-help,
+.console-state, .cell-note small, .telemetry, .recipe li,
+#result-description, #result-evidence, #result-feelings,
+.result-footnote, .result-shares, .site-info { font-weight: 400; }
+#kr-intro#kr-intro { font-family: var(--mono); }
