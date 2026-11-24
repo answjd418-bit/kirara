@@ -47,6 +47,14 @@ class FragmentAudio {
     this.context = null;
     this.master = null;
     this.buffer = null;
+    this.individual = {};
+    const names = {boot:"인트로화면",progress:"프로그래스바",arrival:"페이지입장",labText:"글자써지는거",element:"요소클릭",button:"버튼클릭",scan:"스캔",experiment:"실험",power:"화면켜지는",result:"팝업",typing:"인트로타자",warning:"경고"};
+    this.individualData = this.AudioContext ? Promise.all(Object.entries(names).map(async ([key,name])=>{
+      for(const filename of [...new Set([name.normalize("NFD"),name.normalize("NFC")])]){
+        try { const response=await fetch("./"+encodeURIComponent(filename+".mp3")); if(response.ok) return [key,await response.arrayBuffer()]; } catch {}
+      }
+      return [key,null];
+    })) : Promise.resolve([]);
     this.samplesReady = null;
     this.scene = null;
     this.typing = null;
@@ -80,6 +88,9 @@ class FragmentAudio {
             },resolve);
           });
         }).catch(()=>{});
+        this.individualData.then(entries=>Promise.all(entries.map(async ([key,bytes])=>{
+          if(bytes) try { this.individual[key]=await this.context.decodeAudioData(bytes); } catch {}
+        }))).catch(()=>{});
       }
       if(interactive && !this.playing) await this.context.resume();
       return this.playing;
@@ -89,13 +100,16 @@ class FragmentAudio {
   }
 
   cue(name, {level=1, delay=0, skip=0}={}) {
-    if (!this.playing || !this.buffer || document.hidden) return null;
-    const [offset, length] = clips[name];
+    if (!this.playing || document.hidden) return null;
+    const individual = this.individual[name];
+    const buffer = this.buffer || individual;
+    if (!buffer) return null;
+    const [offset, length] = this.buffer ? clips[name] : [0, individual.duration];
     if (skip >= length) return null;
     const at = this.context.currentTime + delay;
     const source = this.context.createBufferSource();
     const gain = this.context.createGain();
-    source.buffer = this.buffer;
+    source.buffer = buffer;
     gain.gain.value = level;
     source.connect(gain);
     gain.connect(this.master);

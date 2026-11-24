@@ -1,26 +1,27 @@
 <!DOCTYPE html>
-<!-- saved from url=(0060)https://kirara-emotion-lab-v1.workspace-078135.chatgpt.site/ -->
+
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#070708">
   <meta name="description" content="Choose a cell, combine fragments from six emotion graphics, and observe how the composition changes the signal.">
   <title>KIRARA : LAB — Emotion Fragment Experiment</title>
-  <link rel="stylesheet" href="./KIRARA _ LAB — Emotion Fragment Experiment_files/lab.css">
-  <link rel="stylesheet" href="./KIRARA _ LAB — Emotion Fragment Experiment_files/layout-v1.css">
-  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/signal.js" defer=""></script>
-  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/interpretation.js" defer=""></script>
-  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/motifs.js" defer=""></script>
-  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/audio.js" defer=""></script>
-  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/crt-intro.js" defer=""></script>
-  <script src="./KIRARA _ LAB — Emotion Fragment Experiment_files/lab.js" defer=""></script>
+  <link rel="stylesheet" href="./lab.css">
+  <link rel="stylesheet" href="./layout-v1.css">
+  <script src="./signal.js" defer=""></script>
+  <script src="./interpretation.js" defer=""></script>
+  <script src="./motifs.js" defer=""></script>
+  <script src="./audio.js" defer=""></script>
+  <link rel="stylesheet" href="./kirara-intro.css">
+  <script src="./lab.js" defer=""></script>
+  <script src="./kirara-intro.js" defer=""></script>
 </head>
 <body>
-  <dialog id="lab-opening" class="crt-opening" aria-label="Terminal opening">
-    <div id="crt-intro" tabindex="-1"></div>
-  </dialog>
+<div id="kr-intro" role="dialog" aria-modal="true" aria-label="KIRARA : LAB — loading the emotion experiment">
+  <canvas aria-hidden="true"></canvas>
+</div>
   <header class="masthead">
-    <div><a class="brand" href="https://kirara-emotion-lab-v1.workspace-078135.chatgpt.site/">KIRARA <i>:</i> LAB</a><h1>EMOTION ELEMENT EXPERIMENT</h1></div>
+    <div><a class="brand" href="./index.html">KIRARA <i>:</i> LAB</a><h1>EMOTION ELEMENT EXPERIMENT</h1></div>
     <div class="mast-tools">
       <p>// EMOTION FRAGMENTS / VISUAL EXPERIMENT</p>
       <div class="locale" role="group" aria-label="Language / 언어">
@@ -52,7 +53,7 @@
       </div>
       <div class="console-panel">
         <div class="dataset-metadata"><span data-ko="소스 그래픽">SOURCE GRAPHICS</span><output>06</output></div>
-        <div id="emotions" class="emotions" aria-label="Emotion fragments"><button class="emotion" type="button" style="--emotion: #48dae9;"><span class="id">E01</span><span>Emotional Lostness</span><small lang="ko">정서적 미아</small></button><button class="emotion" type="button" style="--emotion: #ff7482;"><span class="id">E02</span><span>Overload</span><small lang="ko">과부하</small></button><button class="emotion" type="button" style="--emotion: #f767df;"><span class="id">E03</span><span>Glitched Excitement</span><small lang="ko">고장난 설렘</small></button><button class="emotion" type="button" style="--emotion: #cdf677;"><span class="id">E04</span><span>Chain Liberation</span><small lang="ko">연쇄적 해방감</small></button><button class="emotion" type="button" style="--emotion: #70f5df;"><span class="id">E05</span><span>Unpaid Affection</span><small lang="ko">무급 애정</small></button><button class="emotion" type="button" style="--emotion: #fa7e61;"><span class="id">E06</span><span>Overheated Pride</span><small lang="ko">과열된 자존심</small></button></div>
+        <div id="emotions" class="emotions" aria-label="Emotion fragments"></div>
       </div>
       <div class="console-panel console-log">
         <p id="console-state" class="console-state" role="status">SOURCE FRAGMENTS / READY</p>
@@ -85,7 +86,7 @@
           <p class="simulated" data-ko="시뮬레이션 · 작품 신호">SIMULATED / ART SIGNAL</p>
           <p id="signal-tone" class="signal-tone">SIGNAL / IDLE</p>
         </div>
-        <figure class="mri"><img src="./KIRARA _ LAB — Emotion Fragment Experiment_files/brain-sagittal.jpg" alt="Sagittal brain MRI" width="240" height="271"></figure>
+        <figure class="mri"><img src="./brain-sagittal.jpg" alt="Sagittal brain MRI" width="240" height="271"></figure>
         <dl class="channels">
           <div><dt id="label-pfc">PFC</dt><dd><output id="value-pfc">0.00</output><meter id="meter-pfc" aria-labelledby="label-pfc" min="0" max="1" value="0"></meter></dd></div>
           <div><dt id="label-amy">AMY</dt><dd><output id="value-amy">0.00</output><meter id="meter-amy" aria-labelledby="label-amy" min="0" max="1" value="0"></meter></dd></div>
@@ -192,6 +193,6 @@
       </div>
     </div>
   </dialog>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a5f7a06a3814d1ef',t:'MTc5NTUxNTA1NQ=='};var l=window.parent.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/jsd/main.js?ray=a5f7a06a3814d1ef',a=document.createElement('script');a.src=o?new URL(u,o).href:u;document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; visibility: hidden;" src="./KIRARA _ LAB — Emotion Fragment Experiment_files/saved_resource.html"></iframe>
+
 
 </body></html>

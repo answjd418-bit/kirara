@@ -17,13 +17,13 @@ const eScanPen = eScanOverlay.getContext("2d");
 const resultMapPreview = $("#result-map-preview");
 const saveResultPng = $("#save-result-png");
 const exportStatus = $("#result-export-status");
-const opening=$("#lab-opening");
+let introActive=true;
 const audio=new FragmentAudio();
-let terminalStarted=false;
+
 let audioBusy=false;
 const replayDuration = 2700;
 const scanDuration = replayDuration/1000;
-const crtIntro=$("#crt-intro");
+
 let intenseSignal=false;
 let warningSound=null;
 let labOpenedAt=null;
@@ -145,49 +145,7 @@ function playCurrentScene() {
   if(replay)audio.startScan(replay.mode,(performance.now()-replay.time)/1000);
 }
 
-async function beginTerminal() {
-  if(terminalStarted)return;
-  terminalStarted=true;
-  if(!opening.open)opening.showModal();
-  opening.classList.add("powering-on");
-  const powerDuration=motion.matches?80:370;
-  const power=crtIntro.animate(
-    [{transform:"scale(.03,.004)",opacity:0},
-     {transform:"scale(.96,.006)",opacity:1,offset:.25},
-     {transform:"scale(1,.72)",opacity:1,offset:.63},
-     {transform:"scale(1)",opacity:0}],
-    {duration:powerDuration,easing:"ease-out"}
-  );
-  const powerStarted=performance.now();
-  if(!audio.cue("power",{level:.78})){
-    audio.samplesReady?.then(()=>{
-      const elapsed=performance.now()-powerStarted;
-      if(opening.open&&elapsed<powerDuration)audio.cue("power",{level:.78,skip:elapsed/1000});
-    });
-  }
-  let animationDeadline;
-  await Promise.race([power.finished.catch(()=>{}),new Promise(resolve=>{
-    animationDeadline=setTimeout(resolve,powerDuration+140);
-  })]);
-  clearTimeout(animationDeadline);
-  power.cancel();
-  opening.classList.remove("powering-on");
-  if(!opening.open)return;
-  let progressSoundPlayed=false;
-  audio.cue("boot");
-  try {
-    startFragmentTerminal(terminalDuration,(elapsed,total)=>{
-      if(opening.open)audio.startTyping(elapsed);
-      return typedCharacterCount(elapsed,total);
-    },progress=>{
-      if(progressSoundPlayed||!opening.open||progress<=.01||progress>.10)return;
-      progressSoundPlayed=Boolean(audio.cue("progress"));
-    });
-    crtIntro.focus({preventScroll:true});
-  }catch {
-    opening.close();
-  }
-}
+
 
 function cancelPlayback() {
   if(!replay)return;
@@ -260,8 +218,16 @@ async function prepareSamples(){
   const loads=samples.map(async sample=>{
     const image=new Image();
     const sheet=motifSheets[sample.id];
-    image.src="art/elements/"+sheet.file+".png";
-    await image.decode();
+    // GitHub repository stores the original PNG sheets at its root.
+    const rootNames = {E01:"정서적미아.png", E02:"과부하 1.png", E03:"고장난설렘.png", E04:"연쇄적해방감.png", E05:"무급애정.png", E06:"과열된 자존심.png"};
+    const name = rootNames[sample.id];
+    const paths = [name.normalize("NFD"), name.normalize("NFC"), "art/elements/"+sheet.file+".png"];
+    let loaded = false;
+    for (const path of paths) {
+      image.src = "./" + path.split("/").map(encodeURIComponent).join("/");
+      try { await image.decode(); loaded = true; break; } catch {}
+    }
+    if (!loaded) throw new Error("Missing image: " + name);
     sample.textures=prepareMotifs(image,sheet.rows);
     if(!sample.textures.length)throw new Error("Missing motifs in "+sample.id);
     sample.nextTexture=0;
@@ -381,7 +347,6 @@ function syncRecipe(sources){
 }
 
 function sync(){
-  opening.setAttribute("aria-label",t("terminalOpening"));
   const chosen=cells.get(selected);
   $("#target").textContent=selected;
   $("#console-fragments").textContent=String(chosen.layers.length).padStart(2,"0");
@@ -973,7 +938,7 @@ signalToggle.addEventListener("click",()=>{
 });
 motion.addEventListener("change",sync);
 document.addEventListener("keydown",event=>{
-  if(opening.open||resultDialog.open||event.repeat||event.metaKey||event.ctrlKey||event.altKey||event.isComposing||event.target.closest("input,textarea,select,[contenteditable=true]"))return;
+  if(introActive||document.getElementById("kr-intro")||resultDialog.open||event.repeat||event.metaKey||event.ctrlKey||event.altKey||event.isComposing||event.target.closest("input,textarea,select,[contenteditable=true]"))return;
   const shortcut={z:"#undo",c:"#clear",g:"#signal-toggle",r:"#run",x:"#scan-action"}[event.key.toLowerCase()];
   if(!shortcut||$(shortcut).disabled)return;
   event.preventDefault();
@@ -1001,7 +966,9 @@ function revealLabText() {
   audio.cue("labText",{delay:.045,level:.80});
 }
 
-opening.addEventListener("close",()=>{
+window.addEventListener("kirara:enter",()=>{
+  if(!introActive)return;
+  introActive=false;
   labOpenedAt=performance.now();
   audio.stopTyping();
   audio.cue("arrival",{level:.53});
@@ -1021,7 +988,7 @@ document.addEventListener("click",event=>{
 },{capture:true});
 
 async function resumeWithInteraction(event) {
-  if(!terminalStarted||audioBusy||audio.playing||!audio.available||!event.isTrusted||event.repeat)return;
+  if(audioBusy||audio.playing||!audio.available||!event.isTrusted||event.repeat)return;
   audioBusy=true;
   const ready=await audio.enable(true);
   audioBusy=false;
@@ -1043,5 +1010,5 @@ prepareSamples();
 const ua=navigator.userAgent;
 const requiresAudioGesture=/AppleWebKit/.test(ua)&&(!/Chrome|Chromium|Edg\//.test(ua)||/iPhone|iPad|iPod/.test(ua));
 if(!requiresAudioGesture)audio.enable(false);
-beginTerminal();
+
 requestAnimationFrame(animate);
