@@ -218,16 +218,8 @@ async function prepareSamples(){
   const loads=samples.map(async sample=>{
     const image=new Image();
     const sheet=motifSheets[sample.id];
-    // GitHub repository stores the original PNG sheets at its root.
-    const rootNames = {E01:"정서적미아.png", E02:"과부하 1.png", E03:"고장난설렘.png", E04:"연쇄적해방감.png", E05:"무급애정.png", E06:"과열된 자존심.png"};
-    const name = rootNames[sample.id];
-    const paths = [name.normalize("NFD"), name.normalize("NFC"), "art/elements/"+sheet.file+".png"];
-    let loaded = false;
-    for (const path of paths) {
-      image.src = "./" + path.split("/").map(encodeURIComponent).join("/");
-      try { await image.decode(); loaded = true; break; } catch {}
-    }
-    if (!loaded) throw new Error("Missing image: " + name);
+    image.src = "./" + sheet.file + ".png";
+    await image.decode();
     sample.textures=prepareMotifs(image,sheet.rows);
     if(!sample.textures.length)throw new Error("Missing motifs in "+sample.id);
     sample.nextTexture=0;

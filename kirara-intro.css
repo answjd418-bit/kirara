@@ -1,3 +1,4 @@
+
 #kr-intro{position:fixed;inset:0;background:#000;z-index:2147483000;overflow:hidden;font:11px/1.6 "IBM Plex Mono",ui-monospace,monospace;color:#d8d8d8;letter-spacing:.04em;user-select:none;-webkit-user-select:none;touch-action:none}
 #kr-intro canvas{position:absolute;inset:0;width:100%;height:100%}
 html.kr-lock,html.kr-lock body{overflow:hidden}
