@@ -781,6 +781,7 @@ function renderExperiment(result){
   resultArtwork.height=artwork.height;
   resultArtworkPen.imageSmoothingQuality="high";
   resultArtworkPen.drawImage(artwork,0,0);
+  window.emotionOrbit?.setResult(result);
   const i=language==="ko"?1:0;
   const title=reading.title[i];
   $("#result-summary-title").textContent=title;
