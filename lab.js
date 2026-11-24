@@ -234,7 +234,7 @@ function remember(cell){
 }
 
 function addFragment(sample){
-  if(!sample.textures)return;
+  if(!sample.textures?.length)return;
   const cell=cells.get(selected);
   if(cell.layers.length>=18){notify("limit",selected);return;}
   remember(cell);
