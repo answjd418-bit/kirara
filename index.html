@@ -7,7 +7,7 @@
   <meta name="description" content="Choose a cell, combine fragments from six emotion graphics, and observe how the composition changes the signal.">
   <title>KIRARA : LAB — Emotion Fragment Experiment</title>
   <link rel="stylesheet" href="./lab.css?v=particle1">
-  <link rel="stylesheet" href="./layout-v1.css?v=header3">
+  <link rel="stylesheet" href="./layout-v1.css?v=svg-left1">
   <script src="./signal.js" defer=""></script>
   <script src="./interpretation.js" defer=""></script>
   <script src="./motifs.js?v=buttonfix1" defer=""></script>
@@ -38,23 +38,24 @@
         <p class="instructions" data-ko="네모칸을 고른 뒤 아래 감정을 눌러 조각을 겹쳐 보세요.">Select a cell. Click an emotion to add its fragment. Repeat to mix.</p>
         <div class="control-frame active-frame">
         <dl class="telemetry">
-          <div><dt>fps</dt><dd id="console-fps">39</dd></div>
-          <div><dt data-ko="조각">fragments</dt><dd id="console-fragments">00</dd></div>
+          <div><dt data-ko="프레임 속도:">FRAME RATE:</dt><dd id="console-fps">39</dd></div>
+          <div><dt data-ko="조각 수:">FRAGMENT COUNT:</dt><dd id="console-fragments">00</dd></div>
         </dl>
         <div class="target"><span data-ko="선택한 칸">ACTIVE CELL</span><strong id="target">A</strong></div>
         </div>
         <div class="control-frame editing-frame">
+        <div class="editing-heading" data-ko="편집">EDITING</div>
         <div class="console-tools">
-          <button id="undo" aria-keyshortcuts="Z" type="button" disabled=""><kbd aria-hidden="true">Z</kbd><span data-ko="마지막 조각 취소">UNDO FRAGMENT</span></button>
-          <button id="clear" aria-keyshortcuts="C" type="button" disabled=""><kbd aria-hidden="true">C</kbd><span data-ko="선택한 칸 비우기">CLEAR ACTIVE CELL</span></button>
+          <button id="undo" aria-keyshortcuts="Z" type="button" disabled=""><kbd aria-hidden="true">Z</kbd><span data-ko="마지막 조각 취소">UNDO LAST ACTION</span></button>
+          <button id="clear" aria-keyshortcuts="C" type="button" disabled=""><kbd aria-hidden="true">C</kbd><span data-ko="선택한 칸 비우기">CLEAR CELL</span></button>
         </div>
         </div>
         <div class="control-frame glitch-frame">
         <div class="signal-controls">
-          <span class="signal-label" data-ko="[ 신호 ]">[ SIGNAL ]</span>
+          <span class="signal-label" data-ko="글리치 효과">GLITCH EFFECT</span>
           <button id="signal-toggle" type="button" aria-pressed="true" aria-keyshortcuts="G" aria-describedby="signal-help">GLITCH ON</button>
         </div>
-        <output id="signal-delta" aria-hidden="true">Δ 0.00</output>
+        <div class="glitch-reading"><span data-ko="글리치 강도:">GLITCH INTENSITY:</span><output id="signal-delta" aria-hidden="true">Δ 0.00</output></div>
         <p class="effect-help" id="signal-help" data-ko="가리키거나 탭하면 색이 나타나요. Δ는 글리치 강도예요.">HOVER / TAP FOR COLOR. Δ SHOWS GLITCH INTENSITY.</p>
         </div>
       </div>
@@ -202,4 +203,16 @@
   </dialog>
 
 
+<script>
+(() => {
+  const lab = document.querySelector('.lab');
+  const mast = document.querySelector('.masthead');
+  if (!lab || !mast) return;
+  const measure = () => lab.style.setProperty('--lab-page-top', (lab.getBoundingClientRect().top + window.scrollY) + 'px');
+  measure();
+  window.addEventListener('resize', measure, {passive:true});
+  if ('ResizeObserver' in window) new ResizeObserver(measure).observe(mast);
+  if (document.fonts) document.fonts.ready.then(measure);
+})();
+</script>
 </body></html>
