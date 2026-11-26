@@ -7,7 +7,7 @@
   <meta name="description" content="Choose a cell, combine fragments from six emotion graphics, and observe how the composition changes the signal.">
   <title>KIRARA : LAB — Emotion Fragment Experiment</title>
   <link rel="stylesheet" href="./lab.css?v=particle1">
-  <link rel="stylesheet" href="./layout-v1.css">
+  <link rel="stylesheet" href="./layout-v1.css?v=layout2">
   <script src="./signal.js" defer=""></script>
   <script src="./interpretation.js" defer=""></script>
   <script src="./motifs.js?v=buttonfix1" defer=""></script>
@@ -33,26 +33,32 @@
   </header>
   <main class="lab">
     <aside class="console" aria-labelledby="console-heading">
-      <div class="console-panel">
+      <div class="console-panel console-controls-panel">
         <h2 id="console-heading" data-ko="&gt; 감정 콘솔">&gt; EMOTION CONSOLE</h2>
         <p class="instructions" data-ko="네모칸을 고른 뒤 아래 감정을 눌러 조각을 겹쳐 보세요.">Select a cell. Click an emotion to add its fragment. Repeat to mix.</p>
+        <div class="control-frame active-frame">
         <dl class="telemetry">
           <div><dt>fps</dt><dd id="console-fps">39</dd></div>
           <div><dt data-ko="조각">fragments</dt><dd id="console-fragments">00</dd></div>
         </dl>
         <div class="target"><span data-ko="선택한 칸">ACTIVE CELL</span><strong id="target">A</strong></div>
+        </div>
+        <div class="control-frame editing-frame">
         <div class="console-tools">
           <button id="undo" aria-keyshortcuts="Z" type="button" disabled=""><kbd aria-hidden="true">Z</kbd><span data-ko="마지막 조각 취소">UNDO FRAGMENT</span></button>
           <button id="clear" aria-keyshortcuts="C" type="button" disabled=""><kbd aria-hidden="true">C</kbd><span data-ko="선택한 칸 비우기">CLEAR ACTIVE CELL</span></button>
         </div>
+        </div>
+        <div class="control-frame glitch-frame">
         <div class="signal-controls">
           <span class="signal-label" data-ko="[ 신호 ]">[ SIGNAL ]</span>
           <button id="signal-toggle" type="button" aria-pressed="true" aria-keyshortcuts="G" aria-describedby="signal-help">GLITCH ON</button>
         </div>
         <output id="signal-delta" aria-hidden="true">Δ 0.00</output>
         <p class="effect-help" id="signal-help" data-ko="가리키거나 탭하면 색이 나타나요. Δ는 글리치 강도예요.">HOVER / TAP FOR COLOR. Δ SHOWS GLITCH INTENSITY.</p>
+        </div>
       </div>
-      <div class="console-panel">
+      <div class="console-panel sources-frame">
         <div class="dataset-metadata"><span data-ko="소스 그래픽">SOURCE GRAPHICS</span><output>06</output></div>
         <div id="emotions" class="emotions" aria-label="Emotion fragments"></div>
       </div>
@@ -85,15 +91,15 @@
         <div class="brain-main">
           <h2 id="brain-heading">BRAIN RESPONSE</h2>
           <p class="simulated" data-ko="시뮬레이션 · 작품 신호">SIMULATED / ART SIGNAL</p>
-          <p id="signal-tone" class="signal-tone">SIGNAL / IDLE</p>
+          
         </div>
         <figure class="mri"><img src="./brain-sagittal.jpg" alt="Sagittal brain MRI" width="240" height="271"></figure>
-        <dl class="channels">
+        <div class="channel-frame"><p id="signal-tone" class="signal-tone">SIGNAL / IDLE</p><dl class="channels">
           <div><dt id="label-pfc">PFC</dt><dd><output id="value-pfc">0.00</output><meter id="meter-pfc" aria-labelledby="label-pfc" min="0" max="1" value="0"></meter></dd></div>
           <div><dt id="label-amy">AMY</dt><dd><output id="value-amy">0.00</output><meter id="meter-amy" aria-labelledby="label-amy" min="0" max="1" value="0"></meter></dd></div>
           <div><dt id="label-acc">ACC</dt><dd><output id="value-acc">0.00</output><meter id="meter-acc" aria-labelledby="label-acc" min="0" max="1" value="0"></meter></dd></div>
           <div><dt id="label-ins">INS</dt><dd><output id="value-ins">0.00</output><meter id="meter-ins" aria-labelledby="label-ins" min="0" max="1" value="0"></meter></dd></div>
-        </dl>
+        </dl></div>
         <figure class="scope">
           <div class="scope-scale" aria-hidden="true"><span>0.0</span><span>0.5</span><span>1.0</span></div>
           <canvas id="scope" width="232" height="165" aria-hidden="true"></canvas>
