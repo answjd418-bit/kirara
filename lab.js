@@ -1306,7 +1306,6 @@ const fxStyle=document.createElement('style');fxStyle.textContent=`
 `;document.head.append(fxStyle);
 function revealLabText(){
  if(motion.matches)return;
- terminalType(document.body,'.masthead .brand,.masthead h1,.mast-tools>p,.locale button,#console-heading,.instructions,.telemetry dt,.target span,.editing-heading,.console-tools span,.console-tools kbd,.signal-label,#signal-toggle,.glitch-reading span,#signal-help,.dataset-metadata span,.emotion span,.emotion small,.cell-label b,.cell-note strong,.cell-note small,#brain-heading,.simulated,#scope-caption,.channels dt,.signal-info summary,#signal-tone,.scan-panel-heading,.scan-summary dt,.run-actions button,#console-state',7000,true);
  for(const {button} of cells.values()){
    const delay=100+Math.random()*850;
    button.animate([{opacity:1,filter:'none'},{opacity:.55,filter:'brightness(1.8) drop-shadow(3px 0 #00dddd)'},{opacity:1,filter:'drop-shadow(-2px 0 #ff36ad)'},{opacity:.78,filter:'brightness(1.4)'},{opacity:1,filter:'none'}],{duration:180+Math.random()*220,delay,easing:'steps(2,end)'});
