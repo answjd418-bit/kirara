@@ -81,37 +81,38 @@ try { if(localStorage.getItem("kirara-fragments-language")==="ko")language="ko";
 // Result report: two-column layout based on the supplied SVG.
 const reportStyle=document.createElement("style");
 reportStyle.textContent=`
-#result-dialog{box-sizing:border-box;width:min(96vw,1500px);max-width:none;max-height:94dvh;margin:auto;padding:clamp(12px,1.35vw,24px);border:1px solid #777;background:#000;color:#eee;overflow:auto}
-#result-dialog .result-body{display:grid;grid-template-columns:minmax(0,38%) minmax(0,1fr);gap:clamp(10px,1vw,18px);align-items:stretch}
-#result-dialog .result-report-reading{display:flex;flex-direction:column;gap:12px;padding-right:clamp(10px,1.2vw,20px);border-right:1px solid #666;min-width:0}
+#result-dialog{box-sizing:border-box;width:min(82vw,1120px);max-width:calc(100vw - 24px);max-height:84dvh;margin:auto;padding:16px;position:fixed;inset:0;border:1px solid #777;background:#000;color:#eee;overflow:auto}
+#result-dialog .result-body{display:grid;grid-template-columns:minmax(0,38%) minmax(0,1fr);gap:14px;align-items:start}
+#result-dialog .result-report-reading{display:flex;flex-direction:column;gap:9px;padding-right:14px;border-right:1px solid #666;min-width:0}
 #result-dialog .result-report-header{gap:8px;padding:4px 4px 14px;border-bottom:1px solid #777}
 #result-dialog .result-report-header>p:first-child{font-size:clamp(12px,1.1vw,20px);padding:0}
-#result-dialog #result-title{font-size:clamp(19px,2vw,32px);line-height:1.35}
+#result-dialog #result-title{font-size:clamp(18px,1.6vw,25px);line-height:1.35}
 #result-dialog #result-feelings{font-size:clamp(12px,1vw,17px);color:#ddd}
 #result-dialog .result-scan-data{grid-template-columns:minmax(0,55%) minmax(0,1fr);gap:12px}
-#result-dialog #result-map-preview canvas{height:clamp(80px,17vh,170px);display:block;object-fit:contain}
+#result-dialog #result-map-preview canvas{height:clamp(76px,12dvh,115px);display:block;object-fit:contain}
 #result-dialog .result-scan-data dl{font-size:clamp(11px,.85vw,14px)}
 #result-dialog .result-interpretation{min-width:0;display:grid;gap:5px}
 #result-dialog .result-interpretation p{line-height:1.45;margin:0}
 #result-dialog .result-report-actions{margin-top:auto;gap:12px;padding-top:6px}
-#result-dialog .result-report-actions button,#result-dialog .result-close button{border:1px solid #777;color:#eee;background:#000;border-radius:0;padding:9px 12px;min-height:36px}
+#result-dialog .result-report-actions button,#result-dialog .result-close button{border:1px solid #777;color:#eee;background:#000;border-radius:0;padding:7px 10px;min-height:32px}
 #result-dialog .result-report-actions button:hover,#result-dialog .result-close button:hover{color:#00dedd;border-color:#00dedd}
 #result-dialog .result-report-plate{display:flex;flex-direction:column;gap:8px;min-width:0;padding:0;border:0}
 #result-dialog .result-artwork{display:flex;flex-direction:column;flex:1;min-height:0;margin:0;padding:0}
-#result-dialog .result-artwork figcaption{width:max-content;max-width:calc(100% - 78px);border:1px solid #777;border-bottom:0;padding:10px;box-sizing:border-box;font-size:clamp(12px,1.05vw,19px)}
-#result-dialog #result-artwork-preview{position:relative;flex:1;min-height:clamp(235px,50dvh,570px);border:1px solid #777;display:grid;place-items:center;overflow:hidden}
-#result-dialog #result-artwork-preview canvas{width:100%;height:100%;max-height:65dvh;object-fit:contain;filter:none;display:block}
+#result-dialog .result-artwork figcaption{width:max-content;max-width:calc(100% - 78px);border:1px solid #777;border-bottom:0;padding:10px;box-sizing:border-box;font-size:clamp(12px,.95vw,15px)}
+#result-dialog #result-artwork-preview{position:relative;flex:none;height:clamp(220px,40dvh,400px);min-height:0;border:1px solid #777;display:grid;place-items:center;overflow:hidden}
+#result-dialog #result-artwork-preview canvas{width:100%;height:100%;max-height:100%;object-fit:contain;filter:none;display:block}
 #result-dialog .result-signals{margin:0;padding:0 3px;gap:5px}
-#result-dialog .result-signals>div{grid-template-columns:minmax(0,35%) minmax(0,1fr);gap:8px;font-size:clamp(11px,.95vw,16px)}
+#result-dialog .result-signals>div{grid-template-columns:minmax(0,35%) minmax(0,1fr);gap:8px;font-size:clamp(10px,.85vw,13px)}
 #result-dialog .result-signals dd{margin:0;grid-template-columns:minmax(0,1fr) 4.5ch;gap:10px}
 #result-dialog .result-signals output{grid-column:2;grid-row:1;text-align:right}
 #result-dialog .result-signals meter{grid-column:1;grid-row:1;height:10px}
 #result-dialog .result-signals meter::-webkit-meter-bar{height:10px}
 #result-dialog .result-signals meter::-webkit-meter-optimum-value{background:#fff}
-#result-dialog .result-close{top:clamp(12px,1.35vw,24px);right:clamp(12px,1.35vw,24px)}
+#result-dialog .result-close{top:16px;right:16px}
 #result-dialog #result-music-recommendation{font-size:.82rem}
 #result-dialog #result-music-recommendation [data-player]:empty{display:none}
-@media(max-width:759px){#result-dialog .result-body{grid-template-columns:minmax(0,1fr)}#result-dialog .result-report-reading{border:0;padding:0}#result-dialog .result-report-header>p:first-child{padding-right:72px}#result-dialog .result-report-plate{border-top:1px solid #777;padding-top:12px}#result-dialog #result-artwork-preview{min-height:240px}#result-dialog .result-signals>div{grid-template-columns:minmax(0,44%) minmax(0,1fr)}}
+@media(min-width:760px) and (min-height:560px){#result-dialog .result-report-reading{max-height:calc(84dvh - 34px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#555 #000}#result-dialog .result-report-actions{margin-top:4px} }
+@media(max-width:759px){#result-dialog{width:calc(100vw - 24px);max-height:90dvh;padding:12px}#result-dialog .result-close{top:12px;right:12px}#result-dialog .result-body{grid-template-columns:minmax(0,1fr)}#result-dialog .result-report-reading{border:0;padding:0}#result-dialog .result-report-header>p:first-child{padding-right:72px}#result-dialog .result-report-plate{border-top:1px solid #777;padding-top:12px}#result-dialog #result-artwork-preview{height:clamp(220px,36dvh,350px);min-height:0}#result-dialog .result-signals>div{grid-template-columns:minmax(0,44%) minmax(0,1fr)}}
 `;
 document.head.append(reportStyle);
 const reportCaption=$("#result-artwork-title");
