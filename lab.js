@@ -796,6 +796,52 @@ for(const button of document.querySelectorAll("[data-lang]")){
 }
 $("#undo").addEventListener("click",undo);
 $("#clear").addEventListener("click",clearCell);
+// Artistic music matching, based on the dominant fragment sources.
+const musicMatches={
+ E01:["Worries","걱정","Interrupted piano phrases suggest uncertainty.","끊겼다 이어지는 피아노 선율이 막막함과 불확실성을 연상시킵니다."],
+ E02:["Earthquake","Earthquake","Expanding bass and vibration echo mounting pressure.","팽창하는 저음과 진동이 점차 쌓이는 압박감을 연상시킵니다."],
+ E03:["Rain Dance","Rain Dance","Fragmented samples and shifting textures echo unstable excitement.","잘게 분절된 샘플과 변화하는 질감이 불안정한 설렘과 연결됩니다."],
+ E04:["Water","Water","Gradually evolving water loops suggest space and release.","서서히 변주되는 물소리가 긴장이 풀리고 여백이 생기는 감각과 연결됩니다."],
+ E05:["Stay","Stay","Piano and recordings of shared space suggest lingering warmth.","피아노와 함께 머무는 공간의 소리가 남아 있는 다정함을 연상시킵니다."],
+ E06:["Blink","Blink","Rising riffs and forceful drums suggest tension and defensiveness.","상승하는 리프와 강렬한 드럼의 충돌이 긴장과 경계심을 연상시킵니다."]
+};
+const resultVideos={E01:"yJqxM0EiP9A",E03:"dyTORSHPegc",E06:"puXjmNydyzI"};
+const resultBandcamp={E01:"--2",E02:"earthquake",E03:"rain-dance",E04:"water",E05:"stay-2",E06:"blink"};
+function stopResultMusic(){document.querySelectorAll("#result-music-recommendation [data-player]").forEach(el=>el.replaceChildren());document.querySelectorAll("#result-music-recommendation [data-listen]").forEach(el=>el.setAttribute("aria-expanded","false"));}
+resultDialog.addEventListener("close",stopResultMusic);
+new MutationObserver(()=>{if(!resultDialog.open)stopResultMusic();}).observe(resultDialog,{attributes:true,attributeFilter:["open"]});
+function renderMusicRecommendation(reading){
+ const ko=language==="ko";
+ let section=document.getElementById("result-music-recommendation");
+ if(!section){
+  section=document.createElement("section");section.id="result-music-recommendation";
+  section.style.cssText="border-top:1px solid #666;margin-top:12px;padding-top:12px;display:grid;gap:7px;min-width:0";
+  document.querySelector(".result-interpretation").append(section);
+ }
+ stopResultMusic();
+ const heading=document.createElement("h3");heading.textContent=ko?"추천 음악":"RECOMMENDED TRACK";
+ const items=reading.ranked.slice(0,2).map(([sample,count],index)=>{
+  const track=musicMatches[sample.id]; if(!track)return null;
+  const item=document.createElement("div");item.style.cssText="display:grid;gap:5px;margin-bottom:5px";
+  const name=document.createElement("strong");name.textContent=(index? (ko?"보조 추천 / ":"SECONDARY / "):"")+"KIRARA — "+track[ko?1:0];name.style.color="#00dedd";
+  const reason=document.createElement("p");reason.textContent=track[ko?3:2];
+  const link=document.createElement("a");link.href="https://www.youtube.com/results?search_query="+encodeURIComponent("KIRARA "+track[1]+" official audio");link.target="_blank";link.rel="noopener noreferrer";link.textContent=ko?"곡 찾아 듣기 ↗":"FIND TRACK ↗";link.style.cssText="color:#00dedd;text-decoration:underline";
+  link.href="https://stqpkiraradongjae.bandcamp.com/track/"+resultBandcamp[sample.id];link.textContent=ko?"공식 음원 페이지 ↗":"OFFICIAL TRACK ↗";
+  const play=document.createElement("button");play.type="button";play.dataset.listen=sample.id;play.setAttribute("aria-expanded","false");play.textContent=ko?"▶ 음악 듣기":"▶ LISTEN";play.style.cssText="border:1px solid #00aaaa;background:#000;color:#00dedd;font:inherit;padding:8px;cursor:pointer;text-align:left";
+  const player=document.createElement("div");player.dataset.player="true";player.style.minWidth="0";
+  play.addEventListener("click",()=>{
+   const wasOpen=play.getAttribute("aria-expanded")==="true";stopResultMusic();if(wasOpen)return;
+   const frame=document.createElement("iframe");frame.title="KIRARA — "+track[0];frame.allow="autoplay; encrypted-media; fullscreen; picture-in-picture";frame.referrerPolicy="strict-origin-when-cross-origin";frame.style.cssText="display:block;width:100%;border:0;background:#000";
+   if(resultVideos[sample.id]){frame.src="https://www.youtube-nocookie.com/embed/"+resultVideos[sample.id]+"?autoplay=1&rel=0";frame.style.height="max(200px, 15vw)";frame.allowFullscreen=true;}
+   else{frame.src="https://open.spotify.com/embed/album/6cce6K1y8SQL0eGZgSzpCC?theme=0";frame.style.height="352px";const hint=document.createElement("small");hint.textContent=ko?"앨범 플레이어에서 "+track[1]+" 곡을 선택해 주세요.":"Select "+track[0]+" in the album player.";player.replaceChildren(hint);}
+   player.append(frame);play.setAttribute("aria-expanded","true");
+  });
+  item.append(name,reason,play,player,link);return item;
+ }).filter(Boolean);
+ const note=document.createElement("small");note.textContent=ko?"그래픽 조각 비율에 따른 예술적 추천이며 실제 감정 진단이 아닙니다.":"Artistic match based on fragment shares, not an emotion diagnosis.";
+ section.replaceChildren(heading,...items,note);
+}
+
 function renderExperiment(result){
   const {reading,slot,layers,artwork,scan}=result;
   scan.map.setAttribute("aria-hidden","true");
@@ -826,6 +872,7 @@ function renderExperiment(result){
     row.querySelector("output").textContent=value.toFixed(2);
     row.querySelector("meter").value=value;
   }
+  renderMusicRecommendation(reading);
   const overlap=reading.values[2];
   $("#result-evidence").textContent=reading.second
     ? t(overlap>=.46?"overlapStrong":"overlapLight",Math.round(overlap*100))
