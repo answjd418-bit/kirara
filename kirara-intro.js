@@ -24,7 +24,7 @@
  // Start visuals immediately; audio loading must never block the animation.
  function unlock(){if(ac&&ac.state!=='running')ac.resume().catch(()=>{});}
  function startIntro(){if(started)return;started=true;t0=last=performance.now();it.style.background='transparent';
-  if(AC){try{ac=new AC();master=ac.createGain();master.gain.value=1;const limiter=ac.createDynamicsCompressor();limiter.threshold.value=-4;limiter.ratio.value=8;master.connect(limiter);limiter.connect(ac.destination);unlock();
+  if(AC){try{ac=new AC();master=ac.createGain();master.gain.value=.38;const limiter=ac.createDynamicsCompressor();limiter.threshold.value=-4;limiter.ratio.value=8;master.connect(limiter);limiter.connect(ac.destination);unlock();
    raw.forEach((url,i)=>{ac.decodeAudioData(raw[i].slice(0)).then(buf=>{if(alive&&buf)buffers[i]=buf;}).catch(e=>console.warn('Intro sound decode',i+1,e));});
   }catch(e){console.warn('Intro audio unavailable',e)}}
   requestAnimationFrame(frame);
@@ -59,13 +59,13 @@
   const dt=Math.min(.05,(now-last)/1000);last=now;
   let T=RM?T_EXIT:(now-t0)/1000;if(exitT)T=Math.max(T,T_EXIT);
   if(!exitT&&T>=T_EXIT)exitT=now;
-  if(!exitT&&T<.8&&!bootPlayed){bootPlayed=!!cue(0,3.2,.8-T)}
-  if(!exitT&&!scanPlayed&&T>=.8&&T<T_SYN){scanVoice=cue(1,3.5,T_SYN-T);scanPlayed=!!scanVoice}
+  if(!exitT&&T<.8&&!bootPlayed){bootPlayed=!!cue(0,1.2,.8-T)}
+  if(!exitT&&!scanPlayed&&T>=.8&&T<T_SYN){scanVoice=cue(1,1.3,T_SYN-T);scanPlayed=!!scanVoice}
   if(!exitT&&T>=T_SYN&&!phase3Started){phase3Started=true;if(scanVoice){try{scanVoice.stop()}catch{}}}
-  if(!exitT&&phase3Started){let tick=0;for(const p of P){if(!p.sounded&&T>=p.lockAt){p.sounded=true;p.hit=1;cue(2,.24,.075,tick++*.004)}}}
+  if(!exitT&&phase3Started){let tick=0;for(const p of P){if(!p.sounded&&T>=p.lockAt){p.sounded=true;p.hit=1;cue(2,.12,.075,tick++*.004)}}}
   const iris=exitT?Math.min(1,(now-exitT)/1000/IRIS):0;
   if(exitT&&!fired){fired=true;silence();it.classList.add('kr-done');document.documentElement.classList.remove('kr-lock');window.dispatchEvent(new CustomEvent('kirara:enter'))}
-  if(exitT&&!exitPlayed&&iris<.65){exitPlayed=!!cue(3,5.5,Math.min(1.032,IRIS*(1-iris)))}
+  if(exitT&&!exitPlayed&&iris<.65){exitPlayed=!!cue(3,1.5,Math.min(1.032,IRIS*(1-iris)))}
   if(iris>=1){finish();return}
   const boot=sm(0,.8,T),syn=sm(T_SYN,T_DONE-.2,T),done=sm(T_DONE-.15,T_DONE+.1,T);
   /* --- physics --- */
