@@ -554,3 +554,37 @@ body{background:#000}
  .readouts .run { margin-top:calc(45 * var(--ry)); }
  .readouts .signal-info { margin-top:calc(5 * var(--ry)); }
 }
+
+/* SVG artboard: right frames x=1611..1894, y=170..1053. */
+@media(min-width:1081px){
+ .lab{grid-template-columns:calc(283 * var(--left-x)) minmax(0,1fr) calc(283 * var(--left-x));padding-right:calc(26 * var(--left-x));}
+ .lab > .readouts{--rx:.052083333vw;--ry:.092592593dvh;--ru:min(var(--rx),var(--ry));display:flex;flex-direction:column;align-items:stretch;gap:0;font-size:calc(16 * var(--ru));overflow:visible;margin: max(0px,calc(170 * var(--ry) - var(--lab-page-top,100px) - .25rem)) 0 0;}
+ .readouts .brain{display:flex;flex-direction:column;align-items:stretch;gap:0;width:100%;padding:0;margin:0;overflow:visible;position:relative;}
+ .readouts .brain > .mri,.readouts .brain > .brain-main,.readouts .brain > .scope,.readouts .brain > .channel-frame,.readouts .run{width:100%;max-width:none;min-width:0;box-sizing:border-box;flex:none;align-self:stretch;margin-inline:0;position:relative;background:#000;border:1px solid #777;padding:0;}
+ .readouts .brain > .mri{height:calc(193 * var(--ry));border-bottom:0;display:grid;place-items:center;overflow:visible;}
+ .readouts .mri img{width:100%;height:100%;min-height:0;max-height:none;object-fit:contain;object-position:center;padding:calc(16 * var(--ry)) calc(38 * var(--rx));transform:scaleX(-1);}
+ .readouts .brain > .brain-main{height:calc(70 * var(--ry));display:grid;grid-template-rows:1fr 1fr;border-top:4px double #777;}
+ .readouts .brain-main h2,.readouts .brain-main .simulated{display:flex;align-items:center;gap:.35ch;width:100%;height:auto;min-height:0;margin:0;padding:0 calc(10 * var(--rx));font:400 1em/1 var(--mono);white-space:nowrap;}
+ .readouts .brain-main h2{border-bottom:4px double #777;}
+ .readouts .brain-main .simulated{border-bottom:0;}
+ .readouts .brain > .scope{margin-top:calc(35 * var(--ry));height:calc(136 * var(--ry));display:grid;grid-template-rows:calc(37 * var(--ry)) minmax(0,1fr);}
+ .readouts .scope figcaption{grid-row:1;display:flex;align-items:center;height:auto;margin:0;padding:0 calc(10 * var(--rx));border-bottom:4px double #777;}
+ .readouts .scope #scope{grid-row:2;width:100%;height:100%;min-height:0;max-height:none;aspect-ratio:auto;display:block;}
+ .readouts .brain > .channel-frame{margin-top:calc(35 * var(--ry));height:calc(199 * var(--ry));display:grid;grid-template-rows:calc(37 * var(--ry)) minmax(0,1fr);}
+ .readouts .channel-frame .signal-tone{width:100%;height:100%;margin:0;display:flex;align-items:center;padding:0 20% 0 calc(10 * var(--rx));font:400 1em/1 var(--mono);white-space:nowrap;}
+ .readouts .channel-frame .signal-tone::after{content:'✱';width:19.5%;font:400 1.6em/1 var(--mono);}
+ .readouts .channel-frame .channels{display:grid;grid-template-rows:repeat(4,1fr);gap:0;padding:calc(22 * var(--ry)) calc(10 * var(--rx));margin:0;position:relative;font:400 1em/1 var(--mono);}
+ .readouts .channels>div{grid-template-columns:3ch minmax(0,1fr);gap:calc(5 * var(--rx));}
+ .readouts .channels dd{grid-template-columns:minmax(0,1fr) 6.3ch;gap:calc(5 * var(--rx));}
+ .readouts .channels meter{height:calc(8 * var(--ry));}
+ .readouts .channels output{font-weight:400;white-space:nowrap;}
+ .readouts .brain > .scope::after,.readouts .brain > .channel-frame::after{height:calc(35 * var(--ry));left:20%;right:20%;border-width:calc(8 * var(--ru));z-index:-1;}
+ .readouts .brain > .signal-info{position:absolute;top:100%;right:0;left:0;margin:calc(7 * var(--ry)) 0 0;z-index:3;font-size:.75em;}
+ .readouts .signal-info[open]{background:#000;border:1px solid #777;padding:.4em;}
+ .readouts > .run{margin-top:calc(76 * var(--ry));min-height:0;display:flex;flex-direction:column;}
+ .readouts .scan-panel-heading{height:calc(37 * var(--ry));padding:0 calc(10 * var(--rx));}
+ .readouts .scan-summary{height:calc(116 * var(--ry));grid-template-columns:27% 1fr;}
+ .readouts .scan-summary dl{display:flex;flex-direction:column;justify-content:space-evenly;gap:0;padding:0 calc(10 * var(--rx));}
+ .readouts .run-actions{grid-template-columns:1fr 1fr;gap:0;}
+ .readouts .run-actions button{font:400 .75em/1.1 var(--mono);min-height:calc(30 * var(--ry));padding:.2em;}
+}
