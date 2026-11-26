@@ -704,3 +704,31 @@ body{background:#000}
   .stage .cell.e { left:38.82253%; top:41.78947%; width:27.55973%; height:43.47368%; }
   .stage .cell.f { left:68.94198%; top:49.78947%; width:27.64505%; height:48.31579%; }
 }
+
+/* Final SVG: outward corner registration marks and compact language selector. */
+.readouts .brain > .mri, .readouts .brain > .brain-main { overflow:visible; }
+.readouts .brain > .mri::before,
+.readouts .brain > .brain-main::before,
+.readouts .brain > .scope::before,
+.readouts .brain > .channel-frame::before,
+.readouts > .run::before {
+  content:""; position:absolute; inset:-8px; z-index:2; pointer-events:none;
+  background:linear-gradient(45deg,transparent 46%,#aaa 47%,#aaa 53%,transparent 54%) top left/9px 9px no-repeat,
+    linear-gradient(-45deg,transparent 46%,#aaa 47%,#aaa 53%,transparent 54%) top right/9px 9px no-repeat,
+    linear-gradient(-45deg,transparent 46%,#aaa 47%,#aaa 53%,transparent 54%) bottom left/9px 9px no-repeat,
+    linear-gradient(45deg,transparent 46%,#aaa 47%,#aaa 53%,transparent 54%) bottom right/9px 9px no-repeat;
+}
+.readouts .brain > .brain-main::before { background:linear-gradient(-45deg,transparent 46%,#aaa 47%,#aaa 53%,transparent 54%) bottom left/9px 9px no-repeat,linear-gradient(45deg,transparent 46%,#aaa 47%,#aaa 53%,transparent 54%) bottom right/9px 9px no-repeat; }
+.masthead .locale { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0; border:1px solid #aaa; }
+.masthead .locale button, .masthead .locale button[aria-pressed=true] { box-sizing:border-box; border:0; border-radius:0; min-width:0; min-height:0; width:100%; height:100%; padding:0; background:#000; font-weight:400; }
+.masthead .locale button+button { border-left:1px solid #aaa; }
+.masthead .locale button[aria-pressed=true] { color:var(--mint); }
+.masthead .locale button[aria-pressed=false] { color:#eee; }
+@media (min-width:1081px) {
+ .masthead { position:relative; margin-right:calc(26 * .052083333vw); }
+ .masthead::before { position:absolute; left:25%; right:0; top:calc(25 * .092592593dvh); margin:0; height:calc(12 * .092592593dvh); }
+ .masthead .mast-tools { position:absolute; right:0; top:calc(58 * .092592593dvh); margin:0; }
+ .masthead .locale { width:calc(142 * .052083333vw); height:calc(41 * .092592593dvh); }
+ .masthead .locale button { font:400 calc(16 * min(.052083333vw,.092592593dvh))/1 var(--mono); }
+}
+@media (max-width:1080px) { .masthead .locale { width:112px; height:32px; } }
