@@ -691,3 +691,16 @@ body{background:#000}
  .readouts .run-actions button { min-height:0; height:100%; }
 }
 @media(max-width:1080px){ .readouts .run { margin-bottom:4em; } .readouts .run-actions { position:absolute; top:calc(100% + 1em); left:0; right:0; height:auto; transform:none; } }
+
+/* Final SVG cell geometry: reference stage x=396..1568, y=105..1055. */
+@media (min-width:1081px) {
+  .stage .cell.a { left:0.00000%; top:14.63158%; width:23.63481%; height:48.31579%; }
+  .stage .note-a { left:0.00000%; top:calc(62.94737% + 2px); width:23.63481%; }
+  .stage .cell.b { left:28.75427%; top:0.00000%; width:39.16382%; height:29.15789%; }
+  .stage .note-b { left:28.75427%; top:calc(29.15789% + 2px); width:39.16382%; }
+  .stage .cell.c { left:71.33106%; top:9.26316%; width:28.66894%; height:29.15789%; }
+  .stage .note-c { left:71.33106%; top:calc(38.42105% + 2px); width:28.66894%; }
+  .stage .cell.d { left:11.77474%; top:67.15789%; width:23.63481%; height:29.15789%; }
+  .stage .cell.e { left:38.82253%; top:41.78947%; width:27.55973%; height:43.47368%; }
+  .stage .cell.f { left:68.94198%; top:49.78947%; width:27.64505%; height:48.31579%; }
+}
