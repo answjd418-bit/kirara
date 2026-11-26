@@ -249,3 +249,45 @@ body{background:#000}
 @media(min-width:1081px){body{height:auto;min-height:100dvh;display:block}.lab{grid-template-columns:minmax(190px,15.4%) minmax(0,1fr) minmax(190px,15.4%);grid-template-areas:"console stage readouts";align-items:start;min-height:0;padding-top:.25rem}.stage{height:max(680px,calc(100svh - 100px));min-height:0}.console{margin-top:clamp(38px,8vh,100px);display:flex;flex-direction:column;gap:.55rem;overflow:visible}.readouts{margin-top:clamp(24px,5.5vh,68px);display:flex;flex-direction:column;gap:.8rem;min-height:0}.stage .a{left:0;top:15%;width:23.5%;height:48%}.stage .b{left:28.6%;top:0;width:39%;height:29%}.stage .c{left:71%;top:9%;width:28.5%;height:29%}.stage .d{left:11.7%;top:67%;width:23.5%;height:29%}.stage .cell.e{left:38.5%;top:42%;width:27.5%;height:43%}.stage .f{left:68.7%;top:50%;width:27.5%;height:48%}.stage .note-a{left:0;top:63.2%;width:23.5%}.stage .note-b{left:28.6%;top:29.2%;width:39%}.stage .note-c{left:71%;top:38.2%;width:28.5%}.readouts .run{margin-top:1.1rem}.site-info{padding-top:.5rem}}
 @media(max-width:1080px){body{display:block;height:auto}.lab{grid-template-columns:minmax(170px,.36fr) minmax(0,1fr);grid-template-areas:"console stage" "readouts readouts"}.console{display:flex;flex-direction:column;overflow:visible;margin-top:0}.readouts{display:grid;grid-template-columns:1fr 1fr;align-items:start}.stage{height:clamp(500px,75vh,820px);min-height:0}}
 @media(max-width:620px){.masthead>div:first-child{max-width:65vw}.masthead::before{display:none}.lab{grid-template-columns:1fr;grid-template-areas:"stage" "console" "readouts";padding:0 1rem 1rem}.readouts{display:flex}.stage{min-height:0}.console .sources-frame .emotions{grid-template-columns:1fr 1fr}.console .emotion{border-right:1px solid #444}.stage .cell.e{--taper:22%}.stage .cell.e::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M22 0H100L78 100H0Z' fill='none' stroke='%23777' stroke-width='.6' stroke-dasharray='1 1'/%3E%3C/svg%3E")}}
+
+/* Compact console: keep all six source buttons visible on desktop. */
+.console .emotion .id { white-space: nowrap; overflow-wrap: normal; font-size: .82em; }
+.console .emotion > span:not(.id) { min-width: 0; }
+.console .emotion { grid-template-columns: 3.5ch minmax(0,1fr) .4rem; }
+@media (min-width: 1081px) {
+  .lab > .console {
+    --console-unit: clamp(10px, 1.55vh, 14px);
+    font-size: var(--console-unit);
+    margin-top: 0;
+    padding: 0;
+    gap: clamp(4px, .7vh, 8px);
+    overflow: visible;
+    align-self: start;
+  }
+  .console .console-controls-panel { gap: clamp(5px, .85vh, 10px); }
+  .console .console-controls-panel h2 { font-size: 1em; line-height: 1.2; margin: 0; padding: 0; }
+  .console .console-controls-panel .instructions { font-size: .87em; line-height: 1.28; margin: 0; }
+  .console .active-frame .target { margin: 0; padding: .2em .55em; line-height: 1.25; }
+  .console .telemetry { padding: .3em .55em; font-size: .87em; line-height: 1.3; }
+  .console .console-tools { padding: .2em .55em; gap: 0; }
+  .console .console-tools button { min-height: 0; padding: .23em 0; line-height: 1.25; font-size: .9em; }
+  .console .glitch-frame .signal-controls { padding: .18em .55em; font-size: .87em; line-height: 1.25; }
+  .console .glitch-frame .signal-controls button { min-height: 0; padding: .22em 0; }
+  .console .glitch-frame #signal-delta { font-size: .85em; padding: .24em .55em; line-height: 1.2; }
+  .console .glitch-frame .effect-help { padding: 0 .55em .4em; font-size: .8em; line-height: 1.25; }
+  .console .sources-frame { margin-top: .35em; overflow: visible; }
+  .console .dataset-metadata { font-size: .9em; padding: .25em .55em; line-height: 1.25; }
+  .console .sources-frame .emotions { gap: 0; margin: 0; }
+  .console .sources-frame .emotion {
+    font-size: .9em; line-height: 1.22; min-height: 0;
+    grid-template-columns: 3.5ch minmax(0,1fr) .4rem;
+    grid-template-rows: auto auto; gap: .12em .45em;
+    padding: .38em .5em; align-items: center;
+  }
+  .console .emotion .id { grid-column: 1; grid-row: 1; }
+  .console .emotion > span:not(.id) { grid-column: 2; grid-row: 1; }
+  .console .emotion small { grid-column: 2; grid-row: 2; font-size: .83em; line-height: 1.2; margin: 0; }
+  .console .emotion::after { margin-top: 0; align-self: center; }
+  .console .console-log { margin: 0; }
+  .console .console-state { font-size: .78em; line-height: 1.25; min-height: 0; margin: 0; padding: .15em 0; }
+}
