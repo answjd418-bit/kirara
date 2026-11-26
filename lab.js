@@ -1322,7 +1322,7 @@ function revealLabText(){
  }
 }
 new MutationObserver(()=>{
- if(resultDialog.open){terminalType(resultDialog,'.retro-titlebar,.retro-header,.retro-footer,.result-report-header,.result-interpretation h3,.result-interpretation p,.result-shares summary,.retro-parameters h3,.result-signals dt,#result-artwork-title,#result-music-recommendation strong,#result-music-recommendation p,#result-music-recommendation small',1750);audio.cue("labText",{level:.55});}
+ if(resultDialog.open){terminalType(resultDialog,'.retro-titlebar,.retro-header,.retro-footer,.result-report-header,.result-interpretation h3,.result-interpretation p,.result-shares summary,.retro-parameters h3,.result-signals dt,#result-artwork-title,#result-music-recommendation strong,#result-music-recommendation p,#result-music-recommendation small',4800);audio.cue("labText",{level:.55});}
  else{terminalRuns.get(resultDialog)?.();resultArtworkPreview.classList.remove('kr-music-live');}
 }).observe(resultDialog,{attributes:true,attributeFilter:['open']});
 
