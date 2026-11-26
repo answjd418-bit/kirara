@@ -7,13 +7,13 @@
   <meta name="description" content="Choose a cell, combine fragments from six emotion graphics, and observe how the composition changes the signal.">
   <title>KIRARA : LAB — Emotion Fragment Experiment</title>
   <link rel="stylesheet" href="./lab.css?v=particle1">
-  <link rel="stylesheet" href="./layout-v1.css?v=svg-left1">
+  <link rel="stylesheet" href="./layout-v1.css?v=svg-right1">
   <script src="./signal.js" defer=""></script>
   <script src="./interpretation.js" defer=""></script>
   <script src="./motifs.js?v=buttonfix1" defer=""></script>
   <script src="./audio.js" defer=""></script>
   <link rel="stylesheet" href="./kirara-intro.css">
-  <script src="./lab.js?v=warning2" defer=""></script>
+  <script src="./lab.js?v=warning3" defer=""></script>
   <script src="./emotion-particles.js?v=orbit2" defer></script>
   <script src="./kirara-intro.js" defer=""></script>
 </head>
@@ -26,8 +26,8 @@
     <div class="mast-tools">
       <p>// EMOTION FRAGMENTS / VISUAL EXPERIMENT</p>
       <div class="locale" role="group" aria-label="Language / 언어">
-        <button type="button" data-lang="en" aria-pressed="true" lang="en">EN</button>
-        <button type="button" data-lang="ko" aria-pressed="false" lang="ko">한국어</button>
+        <button type="button" data-lang="en" aria-pressed="true" lang="en">ENG</button>
+        <button type="button" data-lang="ko" aria-pressed="false" lang="ko">KOR</button>
       </div>
     </div>
   </header>
@@ -113,6 +113,8 @@
         </details>
       </section>
       <footer class="run">
+        <div class="scan-panel-heading"><span data-ko="스캔">+ SCAN</span><button type="button" id="scan-more" aria-expanded="false" aria-controls="run-details-scroll" data-ko="상세 정보 →">MORE INFORMATION →</button></div>
+        <div class="scan-summary"><span class="scan-summary-space" aria-hidden="true"></span><dl><div><dt data-ko="선택 칸:">CELL:</dt><dd id="scan-cell-value">(A)</dd></div><div><dt data-ko="감정 종류:">EMOTION TYPES:</dt><dd id="scan-types-value">(0)</dd></div><div><dt data-ko="조각:">FRAGMENTS:</dt><dd id="scan-fragments-value">(0)</dd></div></dl></div>
         <div class="run-details">
           <div id="run-details-scroll" class="run-details-scroll" tabindex="-1">
             <section id="scan-record" class="scan-record" aria-labelledby="scan-record-title" hidden="">

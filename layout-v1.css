@@ -459,3 +459,64 @@ body{background:#000}
   .console .glitch-frame .signal-controls #signal-toggle { display:flex; gap:0; }
   .console #signal-toggle::before,.console #signal-toggle::after { flex:1 1 0; min-width:0; align-self:stretch; }
 }
+
+/* Right instrument panel, measured against the supplied 1920 x 1080 SVG. */
+.readouts { --ru: min(.052083333vw,.092592593dvh); --ry:.092592593dvh; }
+.readouts .brain { position:relative; isolation:isolate; }
+.readouts .brain::before { content:""; position:absolute; z-index:-1; left:20%; right:20%; top:20%; height:66%; border:5px dotted #686868; border-radius:0 0 48% 48%; pointer-events:none; }
+.readouts .mri,.readouts .brain-main,.readouts .scope,.readouts .channel-frame,.readouts .run { box-sizing:border-box; background:#000; border:1px solid #777; border-radius:0; box-shadow:none; }
+.readouts .mri { transform:none; margin:0; border-bottom:0; display:grid; place-items:center; }
+.readouts .mri img { width:100%; height:100%; max-height:none; object-fit:contain; object-position:center; padding:12px 30px; }
+.readouts .brain-main { margin:0; padding:0; }
+.readouts .brain-main h2,.readouts .brain-main .simulated { font:400 1em/1 var(--mono); color:#eee; }
+.readouts .brain-main h2::before,.readouts .brain-main .simulated::before { content:"+ "; }
+.readouts .scope-scale { display:none; }
+.readouts .scope figcaption,.readouts .channel-frame .signal-tone { font:400 1em/1 var(--mono); color:#eee; }
+.readouts .channel-frame .signal-tone { position:relative; }
+.readouts .channel-frame .signal-tone::after { content:"*"; position:absolute; right:0; top:0; bottom:0; width:20%; border-left:1px solid #777; display:grid; place-items:center; font-size:2em; }
+.readouts .channel-frame .channels { font:400 1em/1 var(--mono); }
+.readouts .channels meter::-webkit-meter-bar { background:#666; }
+.readouts .channels meter::-webkit-meter-optimum-value { background:#00dce4; }
+.readouts .channels meter::-moz-meter-bar { background:#00dce4; }
+.readouts .channels output { white-space:nowrap; min-width:4ch; }
+.readouts .channels output::before { content:"— "; color:#aaa; }
+.readouts .run { position:relative; padding:0; text-align:left; min-height:0; }
+.scan-panel-heading { display:flex; align-items:center; justify-content:space-between; padding:.45em .6em; border-bottom:4px double #777; font:400 1em/1 var(--mono); gap:.3em; }
+.readouts #scan-more { font:400 .85em/1 var(--mono); color:#aaa; border:0; padding:0; min-height:0; background:none; white-space:nowrap; }
+.scan-summary { display:grid; grid-template-columns:27% 1fr; }
+.scan-summary-space { border-right:1px solid #666; }
+.scan-summary dl { padding:.55em .55em; display:grid; gap:.45em; margin:0; font:400 1em/1.15 var(--mono); }
+.scan-summary dl>div { display:flex; justify-content:space-between; gap:.2em; white-space:nowrap; }
+.scan-summary dd { margin:0; }
+.readouts #mix-label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+.readouts .run-details { display:none; }
+.readouts .run.show-scan-details .run-details { display:block; position:absolute; z-index:10; right:0; bottom:100%; width:max(100%,260px); height:240px; background:#000; border:1px solid #777; padding:.5em; }
+.readouts .run-actions { display:grid; grid-template-columns:1fr 1fr; gap:0; border-top:1px solid #666; }
+.readouts .run-actions button { border:0; border-right:1px solid #666; font:400 .8em/1.1 var(--mono); padding:.55em .2em; min-height:0; white-space:normal; }
+.readouts .run-actions button:last-child { border-right:0; }
+.readouts .signal-info { font-size:.75em; margin:.4em 0 0; }
+@media(min-width:1081px) {
+ .lab > .readouts { width:100%; font-size:calc(16 * var(--ru)); margin: max(0px,calc(170 * var(--ry) - var(--lab-page-top,100px) - .25rem)) 0 0; padding:0; gap:0; align-self:start; }
+ .readouts .brain { gap:0; padding:0; }
+ .readouts .mri { height:calc(193 * var(--ry)); }
+ .readouts .mri img { padding:calc(15 * var(--ru)) calc(42 * var(--ru)); }
+ .readouts .brain-main h2,.readouts .brain-main .simulated { height:calc(35 * var(--ry)); display:flex; align-items:center; padding:0 calc(10 * var(--ru)); border-bottom:4px double #777; }
+ .readouts .brain-main .simulated { border-bottom:0; }
+ .readouts .scope { margin:calc(40 * var(--ry)) 0 0; height:calc(136 * var(--ry)); }
+ .readouts .scope figcaption { height:calc(37 * var(--ry)); flex:none; display:flex; align-items:center; padding:0 calc(10 * var(--ru)); border-bottom:4px double #777; }
+ .readouts #scope { flex:1; min-height:0; height:0; max-height:none; aspect-ratio:auto; }
+ .readouts .channel-frame { margin-top:calc(40 * var(--ry)); height:calc(199 * var(--ry)); display:grid; grid-template-rows:calc(37 * var(--ry)) minmax(0,1fr); }
+ .readouts .channel-frame .signal-tone { display:flex; align-items:center; padding:0 calc(10 * var(--ru)); border-bottom:4px double #777; white-space:nowrap; }
+ .readouts .channel-frame .channels { padding:calc(15 * var(--ry)) calc(10 * var(--ru)); display:flex; flex-direction:column; justify-content:center; gap:calc(12 * var(--ry)); }
+ .readouts .channels>div { margin:0; gap:calc(5 * var(--ru)); }
+ .readouts .channels dd { gap:calc(5 * var(--ru)); }
+ .readouts .channels meter { height:calc(8 * var(--ry)); }
+ .readouts .signal-info { position:relative; margin:calc(6 * var(--ry)) 0 0; }
+ .readouts .signal-info[open] { z-index:8; }
+ .readouts .signal-info[open] p { background:#000; }
+ .readouts .run { margin-top:calc(58 * var(--ry)); }
+ .readouts .scan-panel-heading { height:calc(37 * var(--ry)); padding:0 calc(10 * var(--ru)); }
+ .readouts .scan-summary dl { padding:calc(10 * var(--ry)) calc(10 * var(--ru)); gap:calc(8 * var(--ry)); }
+ .readouts .run-actions button { min-height:calc(27 * var(--ry)); }
+ .masthead .locale button { font:400 calc(16 * min(.052083333vw,.092592593dvh))/1 var(--mono); width:calc(70 * .052083333vw); height:calc(41 * .092592593dvh); border-radius:0; }
+}

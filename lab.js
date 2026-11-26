@@ -373,6 +373,9 @@ function sync(){
   if(result)renderExperiment(result);
   runDetails.tabIndex=count?0:-1;
   $("#mix-label").textContent=count?t("mix",selected,sources.size,count):t("empty",selected);
+  $("#scan-cell-value").textContent=`(${selected})`;
+  $("#scan-types-value").textContent=`(${sources.size})`;
+  $("#scan-fragments-value").textContent=`(${count})`;
   targets=measure(chosen.layers);
   const mood=count?chosen.layers.reduce((sum,layer)=>sum+sourceTone[layer.sample.id],0)/count:0;
   const energy=scopeEnergy=clamp(targets[1]*.32+targets[2]*.27+targets[3]*.41);
@@ -380,7 +383,15 @@ function sync(){
   if(nextIntenseSignal!==intenseSignal){
     intenseSignal=nextIntenseSignal;
     if(intenseSignal){
-      warningSound=audio.cue("warning",{level:.75});
+      const first=audio.cue("warning",{level:.75});
+      const second=audio.cue("warning",{level:.75,delay:.78});
+      // Stop after two bounded cues, even if a source is configured to loop.
+      const start=audio.context?.currentTime;
+      if(Number.isFinite(start)){
+        first?.stop(start+.632);
+        second?.stop(start+1.412);
+      }
+      warningSound={stop(){for(const source of [first,second]){try{source?.stop();}catch{}}}};
     }else{
       warningSound?.stop();
       warningSound=null;
@@ -1002,3 +1013,6 @@ const requiresAudioGesture=/AppleWebKit/.test(ua)&&(!/Chrome|Chromium|Edg\//.tes
 if(!requiresAudioGesture)audio.enable(false);
 
 requestAnimationFrame(animate);
+
+// Expand the existing scan record without changing the scan workflow.
+$("#scan-more").addEventListener("click",()=>{const b=$("#scan-more"),open=b.getAttribute("aria-expanded")!=="true";b.setAttribute("aria-expanded",String(open));b.closest(".run").classList.toggle("show-scan-details",open);});
