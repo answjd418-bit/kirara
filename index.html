@@ -96,10 +96,10 @@
         </div>
         <figure class="mri"><img src="./brain.png" alt="Sagittal brain MRI" width="206" height="155"></figure>
         <div class="channel-frame"><p id="signal-tone" class="signal-tone">SIGNAL / IDLE</p><dl class="channels">
-          <div><dt id="label-pfc">PFC</dt><dd><output id="value-pfc">0.00</output><meter id="meter-pfc" aria-labelledby="label-pfc" min="0" max="1" value="0"></meter></dd></div>
-          <div><dt id="label-amy">AMY</dt><dd><output id="value-amy">0.00</output><meter id="meter-amy" aria-labelledby="label-amy" min="0" max="1" value="0"></meter></dd></div>
-          <div><dt id="label-acc">ACC</dt><dd><output id="value-acc">0.00</output><meter id="meter-acc" aria-labelledby="label-acc" min="0" max="1" value="0"></meter></dd></div>
-          <div><dt id="label-ins">INS</dt><dd><output id="value-ins">0.00</output><meter id="meter-ins" aria-labelledby="label-ins" min="0" max="1" value="0"></meter></dd></div>
+          <div><dt id="label-pfc">PFC</dt><dd><div id="meter-pfc" class="signal-meter" role="meter" aria-labelledby="label-pfc" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.00"><span class="signal-meter-fill"></span></div><output id="value-pfc">0.00</output></dd></div>
+          <div><dt id="label-amy">AMY</dt><dd><div id="meter-amy" class="signal-meter" role="meter" aria-labelledby="label-amy" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.00"><span class="signal-meter-fill"></span></div><output id="value-amy">0.00</output></dd></div>
+          <div><dt id="label-acc">ACC</dt><dd><div id="meter-acc" class="signal-meter" role="meter" aria-labelledby="label-acc" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.00"><span class="signal-meter-fill"></span></div><output id="value-acc">0.00</output></dd></div>
+          <div><dt id="label-ins">INS</dt><dd><div id="meter-ins" class="signal-meter" role="meter" aria-labelledby="label-ins" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.00"><span class="signal-meter-fill"></span></div><output id="value-ins">0.00</output></dd></div>
         </dl></div>
         <figure class="scope">
           <div class="scope-scale" aria-hidden="true"><span>0.0</span><span>0.5</span><span>1.0</span></div>

@@ -754,7 +754,14 @@ function animate(now){
       const gap=targets[i]-readings[i];
       readings[i]=motion.matches||Math.abs(gap)<.004?targets[i]:readings[i]+gap*.29;
       const formatted=readings[i].toFixed(2);
-      meter.value=readings[i];
+      if(meter){
+        const fill=(readings[i]*100).toFixed(1)+"%";
+        if("value" in meter)meter.value=readings[i];
+        meter.style?.setProperty("--fill",fill);
+        meter.setAttribute?.("aria-valuenow",formatted);
+        const innerFill=meter.querySelector?.(".signal-meter-fill");
+        if(innerFill)innerFill.style.width=fill;
+      }
       if(output.textContent!==formatted)output.textContent=formatted;
     }
     drawScope(seconds,impact);

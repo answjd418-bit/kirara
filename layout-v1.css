@@ -618,3 +618,23 @@ body{background:#000}
  .readouts #scan-more{font-size:.84em;}
  .readouts .run-actions button{font-size:.72em;white-space:nowrap;}
 }
+
+
+/* Bars fix: replace native meter with deterministic custom bars, and tighten the scan panel to match the reference. */
+.readouts .channels dd{display:grid;grid-template-columns:minmax(0,1fr) 6ch;align-items:center;gap:calc(5 * var(--rx, 1px));}
+.readouts .channels output{grid-column:2;grid-row:1;justify-self:end;position:relative;z-index:1;background:#000;padding-left:.18em;white-space:nowrap;min-width:0;text-align:right;}
+.readouts .channels output::before{content:"— ";color:#ddd;}
+.readouts .signal-meter{grid-column:1;grid-row:1;position:relative;display:block;width:100%;min-width:0;height:max(6px,calc(7 * var(--ry, 1px)));background:#71756c;overflow:hidden;--fill:0%;}
+.readouts .signal-meter-fill{position:absolute;left:0;top:0;bottom:0;width:var(--fill);background:#10dfe5;}
+.readouts .channel-frame .channels::before{right:19.2%;}
+.readouts .channel-frame .channels{padding-top:calc(20 * var(--ry, 1px));padding-bottom:calc(20 * var(--ry, 1px));}
+.readouts .scan-panel-heading{border-bottom:3px double #777;}
+.readouts .scan-summary{min-height:calc(100 * var(--ry, 1px));}
+.readouts .scan-summary-space{background:#000;}
+.readouts .run{overflow:hidden;}
+.readouts .run-actions{border-top:0;margin-top:.35rem;gap:.35rem;grid-template-columns:1fr;}
+.readouts .run-actions button{border:1px solid #666;min-height:2.1em;padding:.45em .4em;}
+@media(min-width:1081px){
+  .readouts .run-actions{grid-template-columns:1fr; margin-top:calc(12 * var(--ry));}
+  .readouts .run-actions button{min-height:calc(28 * var(--ry));}
+}
