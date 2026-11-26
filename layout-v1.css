@@ -324,3 +324,41 @@ body{background:#000}
 @media(min-width:1081px){.lab>.console{margin-top:clamp(35px,10vh,105px);}}
 @media(min-width:1081px) and (max-height:720px){.lab>.console{margin-top:clamp(12px,5vh,36px);}}
 @media(max-width:620px){.masthead .mast-copy{max-width:75vw;}.masthead .brand{white-space:normal;}.mast-description span+span{padding-left:1ch;}}
+
+/* Reference proportions: 1640 x 920 desktop composition. */
+@media (min-width:1081px) {
+  .lab > .console {
+    --console-unit: clamp(9px, min(.82vw,1.44vh), 15px);
+    margin-top: clamp(24px, 10.3vh, 112px);
+    gap: clamp(8px, 1.2vh, 14px);
+  }
+  .console .console-controls-panel { gap: clamp(10px, 3.1vh, 34px); }
+  .console .active-frame .target { font-size: 1em; padding: .28em .55em; }
+  .console .telemetry { font-size: 1em; padding: .65em .8em; line-height: 1.42; }
+  .console .console-tools { padding: .55em .8em; }
+  .console .console-tools button { font-size: 1em; padding: .23em 0; font-weight:400; }
+  .console .glitch-frame .signal-controls { font-size: 1em; padding: .28em .55em; }
+  .console .glitch-frame #signal-delta { font-size: 1em; padding: .45em .8em; }
+  .console .glitch-frame .effect-help { font-size: .82em; padding: 0 .8em .5em; }
+  .console .sources-frame { margin-top: clamp(10px, 2.4vh, 26px); }
+  .console .dataset-metadata { font-size: 1em; padding: .36em .55em; }
+  .console .sources-frame .emotion { font-size: 1em; font-weight:400; padding: .65em .55em; line-height:1.25; gap:.18em .45em; }
+  .console .emotion > span:not(.id) { font-weight:400; }
+  .console .emotion small { font-size:.9em; line-height:1.25; }
+  .console .console-state { font-size:.82em; }
+  .readouts { font-size:clamp(9px,min(.82vw,1.44vh),15px); }
+  .masthead .brand { font-size:clamp(15px,1.24vw,24px); }
+  .masthead .mast-description { font-size:clamp(11px,.96vw,18px); }
+}
+@media (min-width:1081px) and (max-height:850px) {
+  .lab > .console { margin-top: 7vh; --console-unit:clamp(9px,min(.82vw,1.35vh),13px); gap: .8vh; }
+  .console .console-controls-panel { gap: 2vh; }
+  .console .sources-frame { margin-top:1.5vh; }
+  .console .sources-frame .emotion { padding-block:.45em; }
+}
+@media (min-width:1081px) and (max-height:650px) {
+  .lab > .console { margin-top:3vh; --console-unit:9px; }
+  .console .console-controls-panel { gap:1.1vh; }
+  .console .sources-frame { margin-top:.8vh; }
+  .console .sources-frame .emotion { padding-block:.3em; }
+}
