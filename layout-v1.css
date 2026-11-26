@@ -520,3 +520,37 @@ body{background:#000}
  .readouts .run-actions button { min-height:calc(27 * var(--ry)); }
  .masthead .locale button { font:400 calc(16 * min(.052083333vw,.092592593dvh))/1 var(--mono); width:calc(70 * .052083333vw); height:calc(41 * .092592593dvh); border-radius:0; }
 }
+
+/* Right column alignment correction: all instruments share one outer width. */
+.readouts .brain { width:100%; min-width:0; align-items:stretch; }
+.readouts .brain > .mri,.readouts .brain > .brain-main,.readouts .brain > .scope,.readouts .brain > .channel-frame { width:100%; max-width:none; min-width:0; align-self:stretch; margin-inline:0; }
+.readouts .mri { overflow:hidden; border-bottom:0; }
+.readouts .mri img { box-sizing:border-box; max-width:100%; min-height:0; object-fit:contain; }
+.readouts .brain-main { border-top:1px solid #777; }
+.readouts .brain-main h2,.readouts .brain-main .simulated { margin:0; font-weight:400; white-space:nowrap; }
+.readouts .channel-frame .signal-tone { box-sizing:border-box; padding-right:19%; font-weight:400; font-size:1em; min-width:0; }
+.readouts .channel-frame .signal-tone::after { width:18%; font-size:1.6em; line-height:1; }
+.readouts .channel-frame .channels { width:100%; min-width:0; box-sizing:border-box; border:0; }
+.readouts .channel-frame .channels>div { display:grid; grid-template-columns:3ch minmax(0,1fr); align-items:center; width:100%; min-width:0; }
+.readouts .channels dt { font-weight:400; }
+.readouts .channels dd { display:grid; grid-template-columns:minmax(0,1fr) 6ch; align-items:center; min-width:0; margin:0; }
+.readouts .channels meter { grid-column:1; grid-row:1; width:100%; min-width:0; }
+.readouts .channels output { grid-column:2; grid-row:1; min-width:0; text-align:right; font-weight:400; }
+.readouts .channels output::before { content:'— '; }
+.readouts .scope { padding:0; overflow:visible; }
+.readouts .scope figcaption { margin:0; min-height:0; font-weight:400; }
+.readouts .run { width:100%; max-width:none; align-self:stretch; }
+.readouts .signal-info summary { font-weight:400; }
+/* Connect only the gaps between the instrument frames. */
+.readouts .brain::before { display:none; }
+.readouts .scope::after,.readouts .channel-frame::after { content:''; position:absolute; pointer-events:none; bottom:100%; left:22%; right:22%; height:1.05rem; border-inline:4px dotted #666; z-index:-1; }
+@media(min-width:1081px) {
+ .lab > .readouts { width:100%; min-width:0; }
+ .readouts .brain { display:flex; flex-direction:column; }
+ .readouts .scope::after,.readouts .channel-frame::after { height:calc(40 * var(--ry)); border-width:calc(8 * var(--ru)); }
+ .readouts .channel-frame .channels { gap:calc(12 * var(--ry)); }
+ .readouts .brain-main h2,.readouts .brain-main .simulated,.readouts .scope figcaption,.readouts .channel-frame .signal-tone { font:400 1em/1 var(--mono); }
+ .readouts .channel-frame .signal-tone { padding-right:19%; }
+ .readouts .run { margin-top:calc(45 * var(--ry)); }
+ .readouts .signal-info { margin-top:calc(5 * var(--ry)); }
+}
