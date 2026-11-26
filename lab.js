@@ -113,6 +113,36 @@ reportStyle.textContent=`
 #result-dialog #result-music-recommendation [data-player]:empty{display:none}
 @media(min-width:760px) and (min-height:560px){#result-dialog .result-report-reading{max-height:calc(84dvh - 34px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#555 #000}#result-dialog .result-report-actions{margin-top:4px} }
 @media(max-width:759px){#result-dialog{width:calc(100vw - 24px);max-height:90dvh;padding:12px}#result-dialog .result-close{top:12px;right:12px}#result-dialog .result-body{grid-template-columns:minmax(0,1fr)}#result-dialog .result-report-reading{border:0;padding:0}#result-dialog .result-report-header>p:first-child{padding-right:72px}#result-dialog .result-report-plate{border-top:1px solid #777;padding-top:12px}#result-dialog #result-artwork-preview{height:clamp(220px,36dvh,350px);min-height:0}#result-dialog .result-signals>div{grid-template-columns:minmax(0,44%) minmax(0,1fr)}}
+@media(min-width:760px){
+ #result-dialog{padding:12px;max-height:88dvh;overflow:auto}
+ #result-dialog .result-body{gap:12px;grid-template-columns:minmax(0,42%) minmax(0,1fr);font-size:clamp(10px,1.5dvh,13px);line-height:1.3}
+ #result-dialog .result-report-reading{max-height:none;overflow:visible;gap:5px;padding-right:12px}
+ #result-dialog .result-report-header{gap:3px;padding:0 0 5px}
+ #result-dialog .result-report-header>p:first-child{font-size:1em}
+ #result-dialog #result-cell,#result-dialog #result-feelings{font-size:.95em}
+ #result-dialog #result-title{font-size:clamp(16px,2.8dvh,23px);line-height:1.2;margin:0}
+ #result-dialog .result-body h3{font-size:1em;margin:0 0 3px}
+ #result-dialog #result-map-preview canvas{height:clamp(48px,9dvh,83px)}
+ #result-dialog .result-scan-data{gap:8px}
+ #result-dialog .result-scan-data dl{gap:3px;font-size:.95em;margin:0}
+ #result-dialog .result-interpretation{gap:3px}
+ #result-dialog #result-description,#result-dialog #result-evidence{font-size:1em;line-height:1.3;margin:0}
+ #result-dialog .result-footnote,#result-dialog .result-shares{font-size:.85em;margin:0}
+ #result-dialog .result-shares{position:relative}
+ #result-dialog .result-shares[open] #result-sources{position:absolute;bottom:100%;left:0;right:0;z-index:5;background:#101010;border:1px solid #777;padding:8px;box-shadow:0 4px 16px #000}
+ #result-dialog .result-report-actions{margin:0;gap:6px;padding-top:2px}
+ #result-dialog .result-report-actions button,#result-dialog .result-close button{font-size:inherit;min-height:25px;padding:4px 7px}
+ #result-dialog .result-report-plate{gap:5px}
+ #result-dialog .result-artwork figcaption{padding:6px;font-size:1em}
+ #result-dialog #result-artwork-preview{height:clamp(150px,43dvh,360px)}
+ #result-dialog .result-signals{gap:3px}
+ #result-dialog .result-signals>div{font-size:.95em}
+ #result-dialog .result-close{top:12px;right:12px}
+ #result-dialog #result-music-recommendation{font-size:1em;line-height:1.3}
+ #result-dialog #result-music-recommendation small{font-size:.8em}
+ #result-dialog #result-music-recommendation a{white-space:normal;text-align:right}
+}
+
 `;
 document.head.append(reportStyle);
 const reportCaption=$("#result-artwork-title");
@@ -848,12 +878,12 @@ $("#undo").addEventListener("click",undo);
 $("#clear").addEventListener("click",clearCell);
 // Artistic music matching, based on the dominant fragment sources.
 const musicMatches={
- E01:["Worries","걱정","Interrupted piano phrases suggest uncertainty.","끊겼다 이어지는 피아노 선율이 막막함과 불확실성을 연상시킵니다."],
- E02:["Earthquake","Earthquake","Expanding bass and vibration echo mounting pressure.","팽창하는 저음과 진동이 점차 쌓이는 압박감을 연상시킵니다."],
- E03:["Rain Dance","Rain Dance","Fragmented samples and shifting textures echo unstable excitement.","잘게 분절된 샘플과 변화하는 질감이 불안정한 설렘과 연결됩니다."],
- E04:["Water","Water","Gradually evolving water loops suggest space and release.","서서히 변주되는 물소리가 긴장이 풀리고 여백이 생기는 감각과 연결됩니다."],
- E05:["Stay","Stay","Piano and recordings of shared space suggest lingering warmth.","피아노와 함께 머무는 공간의 소리가 남아 있는 다정함을 연상시킵니다."],
- E06:["Blink","Blink","Rising riffs and forceful drums suggest tension and defensiveness.","상승하는 리프와 강렬한 드럼의 충돌이 긴장과 경계심을 연상시킵니다."]
+ E01:["Worries","걱정","A melody that loses its way, then returns to a place it almost remembers.","길을 잃은 선율이 어렴풋이 기억나는 곳을 향해 다시 돌아가는 듯해요."],
+ E02:["Earthquake","Earthquake","A quiet tremor grows into a weight too large to hold inside.","작은 떨림이 차오르다 마음 안에 다 담을 수 없는 무게가 되는 듯해요."],
+ E03:["Rain Dance","Rain Dance","Scattered sparks flicker between the wish to begin and the fear of what comes next.","시작하고 싶은 마음과 다음 순간에 대한 두려움 사이로 작은 불꽃들이 흩어져요."],
+ E04:["Water","Water","A ripple loosens the next, leaving room for a breath that was held too long.","하나의 물결이 다음 물결을 풀어주고, 오래 참았던 숨이 비로소 흘러나오는 듯해요."],
+ E05:["Stay","Stay","A little warmth remains in a room even after the person it was meant for has left.","마음을 건네고 싶었던 사람이 떠난 자리에도 작은 온기가 남아 있는 듯해요."],
+ E06:["Blink","Blink","A bright, restless pulse pushes outward, as if to protect something fragile within.","쉴 새 없이 솟아오르는 빛이 안쪽의 여린 무언가를 지키려는 듯해요."]
 };
 const resultBandcamp={E01:"--2",E02:"earthquake",E03:"rain-dance",E04:"water",E05:"stay-2",E06:"blink"};
 let resultPreviewAudio=null, resultPreviewGeneration=0, resultPreviewCache=null;
@@ -870,7 +900,7 @@ function loadResultPreviews(){
  resultPreviewCache=new Promise((resolve,reject)=>{
   const cb="__kiraraPreview"+Date.now(), script=document.createElement("script");
   let timer;const clean=()=>{clearTimeout(timer);script.remove();delete window[cb];};
-  window[cb]=data=>{clean();resolve((data.results||[]).filter(x=>x.wrapperType==="track"&&x.kind==="song"&&x.artistName.toLowerCase()==="kirara"&&x.collectionName.toLowerCase()==="sarah"&&x.previewUrl));};
+  window[cb]=data=>{clean();resolve((data.results||[]).filter(x=>x.wrapperType==="track"&&x.kind==="song"&&x.artistName.toLowerCase()==="kirara"&&x.collectionName.toLowerCase()==="sarah"));};
   script.onerror=()=>{clean();reject(new Error("Preview unavailable"));};
   timer=setTimeout(()=>{clean();reject(new Error("Preview timeout"));},8000);
   script.src="https://itunes.apple.com/lookup?id=1856541802&entity=song&country=us&callback="+cb;
@@ -884,23 +914,23 @@ function renderMusicRecommendation(reading){
  stopResultMusic();
  if(section&&section.tagName!=="SECTION"){section.remove();section=null;}
  if(!section){section=document.createElement("section");section.id="result-music-recommendation";document.querySelector(".result-interpretation").append(section);}
- section.style.cssText="border-top:1px solid #666;margin-top:12px;padding-top:12px;display:grid;gap:9px;min-width:0";
+ section.style.cssText="border-top:1px solid #666;margin-top:3px;padding-top:6px;display:grid;gap:4px;min-width:0";
  const heading=document.createElement("strong");heading.textContent=ko?"+ 추천 음악":"+ RECOMMENDED TRACK";
- const items=reading.ranked.slice(0,2).map(([sample,count],index)=>{
+ const items=reading.ranked.slice(0,1).map(([sample,count])=>{
   const track=musicMatches[sample.id];if(!track)return null;
-  const item=document.createElement("div");item.style.cssText="display:grid;gap:6px;margin-bottom:5px";
-  const name=document.createElement("strong");name.textContent=(index?(ko?"보조 추천 / ":"SECONDARY / "):"")+"KIRARA — "+track[ko?1:0];name.style.color="#00dedd";
+  const item=document.createElement("div");item.style.cssText="display:grid;gap:3px;margin:0";
+  const name=document.createElement("strong");name.textContent="KIRARA — "+track[ko?1:0];name.style.color="#00dedd";
   const reason=document.createElement("p");reason.textContent=track[ko?3:2];
   const link=document.createElement("a");link.href="https://music.apple.com/us/album/sarah/1856541802";link.target="_blank";link.rel="noopener noreferrer";link.textContent=ko?"Apple Music에서 듣기 ↗":"OPEN IN APPLE MUSIC ↗";link.style.cssText="color:#aaa;text-decoration:underline;font-size:.85em";
-  const row=document.createElement("div");row.style.cssText="display:flex;align-items:center;gap:10px;border:1px solid #666;padding:6px;min-width:0";
-  const play=document.createElement("button");play.type="button";play.dataset.listen=sample.id;play.dataset.idle=ko?"▶ 미리듣기":"▶ PREVIEW";play.textContent=play.dataset.idle;play.setAttribute("aria-pressed","false");play.style.cssText="border:1px solid #00aaaa;background:#000;color:#00dedd;font:inherit;padding:7px;cursor:pointer;white-space:nowrap";
+  const row=document.createElement("div");row.style.cssText="display:flex;align-items:center;gap:8px;border:1px solid #666;padding:3px 5px;min-width:0";
+  const play=document.createElement("button");play.type="button";play.dataset.listen=sample.id;play.dataset.idle=ko?"▶ 미리듣기":"▶ PREVIEW";play.textContent=play.dataset.idle;play.setAttribute("aria-pressed","false");play.style.cssText="border:1px solid #00aaaa;background:#000;color:#00dedd;font:inherit;padding:4px 7px;cursor:pointer;white-space:nowrap";
   const player=document.createElement("span");player.dataset.player="true";player.setAttribute("aria-live","polite");player.textContent="00:00 / 00:30";player.style.cssText="font-variant-numeric:tabular-nums;color:#bbb;min-width:0";
   play.addEventListener("click",async()=>{
    const active=play.getAttribute("aria-pressed")==="true";stopResultMusic();if(active)return;
    const generation=resultPreviewGeneration;play.setAttribute("aria-pressed","true");play.textContent=ko?"■ 정지":"■ STOP";player.textContent=ko?"불러오는 중":"LOADING";
    try{
     const tracks=await loadResultPreviews();if(generation!==resultPreviewGeneration||!resultDialog.open)return;
-    const match=tracks.find(x=>x.trackName.toLowerCase()===track[0].toLowerCase()||x.trackName===track[1]);if(!match)throw new Error("No preview");
+    const match=tracks.find(x=>x.trackName.toLowerCase()===track[0].toLowerCase()||x.trackName===track[1]);if(!match||!match.previewUrl)throw new Error("No preview");
     const audio=new Audio(match.previewUrl);resultPreviewAudio=audio;audio.volume=.45;
     const finish=()=>{if(resultPreviewAudio===audio)stopResultMusic();};
     audio.addEventListener("timeupdate",()=>{if(resultPreviewAudio!==audio)return;const limit=Math.min(30,Number.isFinite(audio.duration)?audio.duration:30);if(audio.currentTime>=limit){finish();return;}player.textContent="00:"+String(Math.floor(audio.currentTime)).padStart(2,"0")+" / 00:"+String(Math.floor(limit)).padStart(2,"0");});
@@ -908,9 +938,24 @@ function renderMusicRecommendation(reading){
     await audio.play();
    }catch(e){if(generation===resultPreviewGeneration){stopResultMusic();player.textContent=ko?"미리듣기 불가 · 링크 이용":"UNAVAILABLE · USE LINK";}}
   });
-  row.append(play,player);item.append(name,reason,row,link);return item;
+  row.append(play,player);row.append(link);link.style.marginLeft="auto";
+  const cover=document.createElement("div");cover.style.cssText="width:clamp(48px,8dvh,66px);aspect-ratio:1;position:relative;display:grid;place-items:center;border:1px solid #666;background:#101010;overflow:hidden;align-self:start;color:#aaa;font-size:9px;text-align:center";
+  cover.textContent="KIRARA / SARAH";
+  const info=document.createElement("div");info.style.cssText="display:grid;gap:3px;min-width:0;align-content:start";
+  const album=document.createElement("small");album.textContent="Sarah · KIRARA";album.style.color="#aaa";
+  info.append(name,album,reason);
+  const card=document.createElement("div");card.style.cssText="display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;align-items:start;min-width:0";card.append(cover,info);
+  loadResultPreviews().then(tracks=>{
+   const match=tracks.find(x=>x.trackName.toLowerCase()===track[0].toLowerCase()||x.trackName===track[1]);
+   const art=(match||tracks.find(x=>x.artworkUrl100))?.artworkUrl100;
+   if(!art)return;
+   const image=document.createElement("img");image.alt=ko?"Sarah 앨범 커버":"Sarah album cover";image.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000";
+   image.addEventListener("load",()=>cover.replaceChildren(image),{once:true});image.src=art.replace(/^http:/,"https:");
+   if(match?.trackViewUrl)link.href=match.trackViewUrl;
+  }).catch(()=>{});
+  item.append(card,row);return item;
  }).filter(Boolean);
- const note=document.createElement("small");note.textContent=ko?"Apple Music 제공 미리듣기 · 최대 30초. 그래픽 조각 비율에 따른 예술적 추천입니다.":"Apple Music preview · up to 30 sec. Artistic match based on fragment shares, not an emotion diagnosis.";
+ const note=document.createElement("small");note.textContent=ko?"Apple Music 미리듣기 · 최대 30초 · 예술적 해석":"Apple Music preview · up to 30 sec · Artistic interpretation";
  section.replaceChildren(heading,...items,note);
  loadResultPreviews().catch(()=>{});
 }
