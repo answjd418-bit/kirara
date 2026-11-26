@@ -14,7 +14,6 @@ const resultArtwork = document.createElement("canvas");
 const resultArtworkPen = resultArtwork.getContext("2d");
 const eScanOverlay = $("#e-scan-overlay");
 const eScanPen = eScanOverlay.getContext("2d");
-const resultMapPreview = $("#result-map-preview");
 const saveResultPng = $("#save-result-png");
 const exportStatus = $("#result-export-status");
 let introActive=true;
@@ -277,7 +276,8 @@ const readingHeading=$("#result-reading-title");readingHeading.textContent="Inte
 const retroParameters=document.createElement("section");retroParameters.className="retro-parameters";
 const parametersHeading=document.createElement("h3");parametersHeading.textContent="Parameters";parametersHeading.dataset.ko="분석 지표";
 retroParameters.append(parametersHeading,$(".result-signals"));
-const reportReading=$(".result-report-reading");reportReading.append(retroParameters,$(".result-scan"));
+const reportReading=$(".result-report-reading");reportReading.append(retroParameters);
+$("#result-dialog .result-scan")?.remove();
 const retroFooter=document.createElement("footer");retroFooter.className="retro-footer";
 const retroReady=document.createElement("span");retroReady.className="retro-status";retroReady.textContent="Ready. | Commands:";retroReady.dataset.ko="분석 완료. | 명령:";
 retroFooter.append(retroReady,$(".result-report-actions"),exportStatus);resultDialog.append(retroFooter);
@@ -1085,11 +1085,7 @@ function renderMusicRecommendation(reading){
 }
 
 function renderExperiment(result){
-  const {reading,slot,layers,artwork,scan}=result;
-  scan.map.setAttribute("aria-hidden","true");
-  if(resultMapPreview.firstElementChild!==scan.map)resultMapPreview.replaceChildren(scan.map);
-  $("#result-map-peak").textContent=formatPercent(scan.peak);
-  $("#result-map-coverage").textContent=formatPercent(scan.coverage);
+  const {reading,slot,layers,artwork}=result;
   resultArtwork.setAttribute("role","img");
   resultArtwork.setAttribute("aria-label",t("resultArtwork",slot));
   if(resultArtworkPreview.firstElementChild!==resultArtwork)resultArtworkPreview.replaceChildren(resultArtwork);
