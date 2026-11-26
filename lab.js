@@ -249,6 +249,16 @@ reportStyle.textContent=`
  #result-dialog .retro-footer {padding:4px 8px;gap:8px;line-height:1.35;}
 }
 
+/* Compact monochrome parameter gauges, using the existing live meter values. */
+#result-dialog .result-signals>div{display:grid;grid-template-columns:minmax(0,42%) minmax(0,1fr);align-items:center;gap:8px;}
+#result-dialog .result-signals dt{min-width:0;}
+#result-dialog .result-signals dd{display:grid;grid-template-columns:minmax(0,1fr) 4.2ch;align-items:center;gap:9px;min-width:0;margin:0;}
+#result-dialog .result-signals meter{display:block;appearance:none;-webkit-appearance:none;width:100%;min-width:0;height:7px;background:#242424;border:0;border-radius:0;grid-column:1;grid-row:1;}
+#result-dialog .result-signals meter::-webkit-meter-bar{height:7px;background:#242424;border:1px solid #777;border-radius:0;box-shadow:none;}
+#result-dialog .result-signals meter::-webkit-meter-optimum-value,#result-dialog .result-signals meter::-webkit-meter-suboptimum-value,#result-dialog .result-signals meter::-webkit-meter-even-less-good-value{background:#eee;border-radius:0;box-shadow:none;}
+#result-dialog .result-signals meter::-moz-meter-bar{background:#eee;border-radius:0;}
+#result-dialog .result-signals output{grid-column:2;grid-row:1;text-align:right;white-space:nowrap;}
+
 `;
 document.head.append(reportStyle);
 const reportCaption=$("#result-artwork-title");
