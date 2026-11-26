@@ -143,11 +143,54 @@ reportStyle.textContent=`
  #result-dialog #result-music-recommendation a{white-space:normal;text-align:right}
 }
 
+
+/* Retro result window: retain the previous outer dimensions. */
+#result-dialog{padding:6px;border:3px double #eee;background:#000;color:#f1f1f1;--report-rule:#a0a0a0;--report-muted:#c0c0c0;font-family:var(--mono,monospace);}
+#result-dialog .retro-titlebar{display:flex;align-items:center;gap:8px;background:#f4f4f4;color:#000;padding:5px 8px;min-width:0;font-size:clamp(11px,1.15vw,16px);line-height:1.25;}
+#result-dialog .retro-titlebar strong{font-weight:400;min-width:0;overflow-wrap:anywhere;}
+#result-dialog .retro-path{margin-left:auto;font-size:.85em;white-space:nowrap;}
+#result-dialog .result-close{position:static;flex:none;display:block;margin:0;}
+#result-dialog .result-close button{background:#f4f4f4;color:#000;border:1px solid #000;min-height:0;padding:2px 6px;font:inherit;}
+#result-dialog .result-body{border:1px solid #eee;margin:10px 0 8px;gap:0;align-items:stretch;}
+#result-dialog .result-report-reading,#result-dialog .result-report-plate{padding:7px;gap:6px;min-height:0;border:0;}
+#result-dialog .result-report-reading{border-right:1px solid #eee;}
+#result-dialog .result-report-header{padding:0 0 6px;gap:4px;border-color:#aaa;}
+#result-dialog .result-report-header>p:first-child,#result-dialog .result-artwork figcaption{box-sizing:border-box;background:#f4f4f4;color:#000;width:100%;max-width:100%;border:0;padding:5px 7px;font:inherit;font-weight:500;}
+#result-dialog #result-cell{font-weight:600;color:#eee;letter-spacing:.02em;}
+#result-dialog #result-title{font-size:clamp(15px,2.45dvh,21px);line-height:1.2;}
+#result-dialog #result-feelings{font-size:inherit;color:#ddd;}
+#result-dialog .result-interpretation{gap:4px;}
+#result-dialog #result-reading-title{margin:0 0 2px;}
+#result-dialog #result-description,#result-dialog #result-evidence{font-size:inherit;line-height:1.35;}
+#result-dialog .result-footnote{font-size:.82em;color:#aaa;}
+#result-dialog .retro-parameters{display:grid;gap:5px;border-top:1px solid #aaa;padding-top:6px;}
+#result-dialog .result-signals{padding:0;gap:3px;}
+#result-dialog .result-signals>div{grid-template-columns:minmax(0,1fr) auto;gap:8px;font-size:inherit;}
+#result-dialog .result-signals dt::before{content:none;}
+#result-dialog .result-signals dd{display:block;margin:0;}
+#result-dialog .result-signals meter{display:none;}
+#result-dialog .result-signals output{display:block;text-align:right;}
+#result-dialog .result-scan{border-top:1px solid #aaa;padding-top:6px;}
+#result-dialog .result-scan-data{grid-template-columns:minmax(0,48%) minmax(0,1fr);gap:8px;}
+#result-dialog #result-map-preview canvas{height:clamp(40px,7dvh,68px);}
+#result-dialog .result-artwork{flex:1;gap:6px;padding:0;}
+#result-dialog #result-artwork-preview{flex:1 1 auto;height:auto;min-height:clamp(150px,34dvh,325px);border:1px solid #aaa;}
+#result-dialog #result-artwork-preview canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;}
+#result-dialog #result-music-recommendation{font-size:inherit;line-height:1.3;margin:0!important;padding-top:6px!important;}
+#result-dialog .retro-footer{display:flex;align-items:center;gap:8px;border:1px solid #eee;padding:4px 6px;font-size:clamp(10px,1vw,13px);}
+#result-dialog .retro-status{white-space:nowrap;}
+#result-dialog .result-report-actions{margin:0;padding:0;gap:4px;}
+#result-dialog .result-report-actions button{border:0;min-height:0;padding:3px 6px;color:#eee;background:transparent;}
+#result-dialog .result-report-actions button:hover{background:#eee;color:#000;}
+#result-dialog #result-export-status{margin-left:auto;}
+@media(min-width:760px){#result-dialog .result-body{grid-template-columns:minmax(0,37%) minmax(0,1fr);font-size:clamp(10px,1.5dvh,13px);line-height:1.3;}#result-dialog .result-report-reading{overflow:visible;max-height:none;}#result-dialog .result-report-plate{align-self:stretch;} }
+@media(max-width:759px){#result-dialog .retro-path{display:none;}#result-dialog .result-body{grid-template-columns:minmax(0,1fr);}#result-dialog .result-report-reading{border-right:0;border-bottom:1px solid #eee;}#result-dialog .result-report-header>p:first-child{padding-right:7px;}#result-dialog #result-artwork-preview{height:32dvh;}#result-dialog .retro-footer{flex-wrap:wrap;} }
+
 `;
 document.head.append(reportStyle);
 const reportCaption=$("#result-artwork-title");
-reportCaption.textContent="EMOTION LAB : experiment result";
-reportCaption.dataset.ko="감정 실험실 : 실험 결과";
+reportCaption.textContent="Result Preview";
+reportCaption.dataset.ko="결과 미리보기";
 const reportSave=$("#save-result-png");
 reportSave.textContent="SAVE PNG";reportSave.dataset.ko="PNG 저장";
 const reportExport=document.createElement("button");
@@ -158,6 +201,23 @@ reportExport.addEventListener("click",()=>{
  const text=["EMOTION LAB : experiment result",...fields.map(sel=>$(sel).innerText),...Array.from(document.querySelectorAll(".result-signals>div"),row=>row.querySelector("dt").textContent+" : "+row.querySelector("output").textContent),$("#result-music-recommendation")?.innerText||"",$(".result-footnote").textContent].join("\n\n");
  const url=URL.createObjectURL(new Blob([text],{type:"text/plain;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="kirara-emotion-report.txt";resultDialog.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
 });
+
+// Reuse the original live report nodes and their existing event handlers.
+const retroBar=document.createElement("header");retroBar.className="retro-titlebar";
+const retroIcon=document.createElement("span");retroIcon.textContent="✱";retroIcon.setAttribute("aria-hidden","true");
+const retroName=document.createElement("strong");retroName.textContent="Emotion-Lab 1.0 - Experiment Result";retroName.dataset.ko="Emotion-Lab 1.0 - 실험 결과";
+const retroPath=document.createElement("span");retroPath.className="retro-path";retroPath.textContent="/usr/emotionlab/run [RESULT]";
+retroBar.append(retroIcon,retroName,retroPath,$(".result-close"));resultDialog.prepend(retroBar);
+const reportHeading=$(".result-report-header>p:first-child");reportHeading.textContent="EXPERIMENT RESULT";reportHeading.dataset.ko="실험 결과";
+const readingHeading=$("#result-reading-title");readingHeading.textContent="Interpretation";readingHeading.dataset.ko="감정 해석";
+const retroParameters=document.createElement("section");retroParameters.className="retro-parameters";
+const parametersHeading=document.createElement("h3");parametersHeading.textContent="Parameters";parametersHeading.dataset.ko="분석 지표";
+retroParameters.append(parametersHeading,$(".result-signals"));
+const reportReading=$(".result-report-reading");reportReading.append(retroParameters,$(".result-scan"));
+const retroFooter=document.createElement("footer");retroFooter.className="retro-footer";
+const retroReady=document.createElement("span");retroReady.className="retro-status";retroReady.textContent="Ready. | Commands:";retroReady.dataset.ko="분석 완료. | 명령:";
+retroFooter.append(retroReady,$(".result-report-actions"),exportStatus);resultDialog.append(retroFooter);
+
 const defaultCopy=new Map([...document.querySelectorAll("[data-ko]")].map(node=>[node,node.textContent]));
 const floating = [
   [2,0,.13,.17,62],[3,1,.59,.32,51],[1,0,.75,.42,47],
@@ -913,7 +973,7 @@ function renderMusicRecommendation(reading){
  let section=document.getElementById("result-music-recommendation");
  stopResultMusic();
  if(section&&section.tagName!=="SECTION"){section.remove();section=null;}
- if(!section){section=document.createElement("section");section.id="result-music-recommendation";document.querySelector(".result-interpretation").append(section);}
+ if(!section){section=document.createElement("section");section.id="result-music-recommendation";document.querySelector(".result-report-plate").append(section);}
  section.style.cssText="border-top:1px solid #666;margin-top:3px;padding-top:6px;display:grid;gap:4px;min-width:0";
  const heading=document.createElement("strong");heading.textContent=ko?"+ 추천 음악":"+ RECOMMENDED TRACK";
  const items=reading.ranked.slice(0,1).map(([sample,count])=>{
@@ -979,6 +1039,7 @@ function renderExperiment(result){
   $("#result-summary-title").textContent=title;
   $("#result-title").textContent=title;
   $("#result-cell").textContent=t("resultCell",slot,layers.length);
+  retroPath.textContent="/usr/emotionlab/run/cell_"+slot.toLowerCase()+" [RESULT]";
   const feelings=[reading.first.name[i]];
   if(reading.second)feelings.push(reading.second.name[i]);
   $("#result-feelings").textContent=feelings.join(" / ");
