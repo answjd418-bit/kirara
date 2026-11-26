@@ -78,6 +78,55 @@ let targets=[0,0,0,0];
 let selected="A";
 let language="en";
 try { if(localStorage.getItem("kirara-fragments-language")==="ko")language="ko"; } catch {}
+// Result report: two-column layout based on the supplied SVG.
+const reportStyle=document.createElement("style");
+reportStyle.textContent=`
+#result-dialog{box-sizing:border-box;width:min(96vw,1500px);max-width:none;max-height:94dvh;margin:auto;padding:clamp(12px,1.35vw,24px);border:1px solid #777;background:#000;color:#eee;overflow:auto}
+#result-dialog .result-body{display:grid;grid-template-columns:minmax(0,38%) minmax(0,1fr);gap:clamp(10px,1vw,18px);align-items:stretch}
+#result-dialog .result-report-reading{display:flex;flex-direction:column;gap:12px;padding-right:clamp(10px,1.2vw,20px);border-right:1px solid #666;min-width:0}
+#result-dialog .result-report-header{gap:8px;padding:4px 4px 14px;border-bottom:1px solid #777}
+#result-dialog .result-report-header>p:first-child{font-size:clamp(12px,1.1vw,20px);padding:0}
+#result-dialog #result-title{font-size:clamp(19px,2vw,32px);line-height:1.35}
+#result-dialog #result-feelings{font-size:clamp(12px,1vw,17px);color:#ddd}
+#result-dialog .result-scan-data{grid-template-columns:minmax(0,55%) minmax(0,1fr);gap:12px}
+#result-dialog #result-map-preview canvas{height:clamp(80px,17vh,170px);display:block;object-fit:contain}
+#result-dialog .result-scan-data dl{font-size:clamp(11px,.85vw,14px)}
+#result-dialog .result-interpretation{min-width:0;display:grid;gap:5px}
+#result-dialog .result-interpretation p{line-height:1.45;margin:0}
+#result-dialog .result-report-actions{margin-top:auto;gap:12px;padding-top:6px}
+#result-dialog .result-report-actions button,#result-dialog .result-close button{border:1px solid #777;color:#eee;background:#000;border-radius:0;padding:9px 12px;min-height:36px}
+#result-dialog .result-report-actions button:hover,#result-dialog .result-close button:hover{color:#00dedd;border-color:#00dedd}
+#result-dialog .result-report-plate{display:flex;flex-direction:column;gap:8px;min-width:0;padding:0;border:0}
+#result-dialog .result-artwork{display:flex;flex-direction:column;flex:1;min-height:0;margin:0;padding:0}
+#result-dialog .result-artwork figcaption{width:max-content;max-width:calc(100% - 78px);border:1px solid #777;border-bottom:0;padding:10px;box-sizing:border-box;font-size:clamp(12px,1.05vw,19px)}
+#result-dialog #result-artwork-preview{position:relative;flex:1;min-height:clamp(235px,50dvh,570px);border:1px solid #777;display:grid;place-items:center;overflow:hidden}
+#result-dialog #result-artwork-preview canvas{width:100%;height:100%;max-height:65dvh;object-fit:contain;filter:none;display:block}
+#result-dialog .result-signals{margin:0;padding:0 3px;gap:5px}
+#result-dialog .result-signals>div{grid-template-columns:minmax(0,35%) minmax(0,1fr);gap:8px;font-size:clamp(11px,.95vw,16px)}
+#result-dialog .result-signals dd{margin:0;grid-template-columns:minmax(0,1fr) 4.5ch;gap:10px}
+#result-dialog .result-signals output{grid-column:2;grid-row:1;text-align:right}
+#result-dialog .result-signals meter{grid-column:1;grid-row:1;height:10px}
+#result-dialog .result-signals meter::-webkit-meter-bar{height:10px}
+#result-dialog .result-signals meter::-webkit-meter-optimum-value{background:#fff}
+#result-dialog .result-close{top:clamp(12px,1.35vw,24px);right:clamp(12px,1.35vw,24px)}
+#result-dialog #result-music-recommendation{font-size:.82rem}
+#result-dialog #result-music-recommendation [data-player]:empty{display:none}
+@media(max-width:759px){#result-dialog .result-body{grid-template-columns:minmax(0,1fr)}#result-dialog .result-report-reading{border:0;padding:0}#result-dialog .result-report-header>p:first-child{padding-right:72px}#result-dialog .result-report-plate{border-top:1px solid #777;padding-top:12px}#result-dialog #result-artwork-preview{min-height:240px}#result-dialog .result-signals>div{grid-template-columns:minmax(0,44%) minmax(0,1fr)}}
+`;
+document.head.append(reportStyle);
+const reportCaption=$("#result-artwork-title");
+reportCaption.textContent="EMOTION LAB : experiment result";
+reportCaption.dataset.ko="감정 실험실 : 실험 결과";
+const reportSave=$("#save-result-png");
+reportSave.textContent="SAVE PNG";reportSave.dataset.ko="PNG 저장";
+const reportExport=document.createElement("button");
+reportExport.type="button";reportExport.textContent="EXPORT";reportExport.dataset.ko="보고서 내보내기";
+$(".result-report-actions").append(reportExport);
+reportExport.addEventListener("click",()=>{
+ const fields=["#result-title","#result-cell","#result-feelings","#result-description","#result-evidence","#result-sources"];
+ const text=["EMOTION LAB : experiment result",...fields.map(sel=>$(sel).innerText),...Array.from(document.querySelectorAll(".result-signals>div"),row=>row.querySelector("dt").textContent+" : "+row.querySelector("output").textContent),$("#result-music-recommendation")?.innerText||"",$(".result-footnote").textContent].join("\n\n");
+ const url=URL.createObjectURL(new Blob([text],{type:"text/plain;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="kirara-emotion-report.txt";resultDialog.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+});
 const defaultCopy=new Map([...document.querySelectorAll("[data-ko]")].map(node=>[node,node.textContent]));
 const floating = [
   [2,0,.13,.17,62],[3,1,.59,.32,51],[1,0,.75,.42,47],
@@ -805,41 +854,64 @@ const musicMatches={
  E05:["Stay","Stay","Piano and recordings of shared space suggest lingering warmth.","피아노와 함께 머무는 공간의 소리가 남아 있는 다정함을 연상시킵니다."],
  E06:["Blink","Blink","Rising riffs and forceful drums suggest tension and defensiveness.","상승하는 리프와 강렬한 드럼의 충돌이 긴장과 경계심을 연상시킵니다."]
 };
-const resultVideos={E01:"yJqxM0EiP9A",E03:"dyTORSHPegc",E06:"puXjmNydyzI"};
 const resultBandcamp={E01:"--2",E02:"earthquake",E03:"rain-dance",E04:"water",E05:"stay-2",E06:"blink"};
-function stopResultMusic(){document.querySelectorAll("#result-music-recommendation [data-player]").forEach(el=>el.replaceChildren());document.querySelectorAll("#result-music-recommendation [data-listen]").forEach(el=>el.setAttribute("aria-expanded","false"));}
+let resultPreviewAudio=null, resultPreviewGeneration=0, resultPreviewCache=null;
+function stopResultMusic(){
+ ++resultPreviewGeneration;
+ if(resultPreviewAudio){resultPreviewAudio.pause();resultPreviewAudio.removeAttribute("src");resultPreviewAudio.load();resultPreviewAudio=null;}
+ document.querySelectorAll("#result-music-recommendation [data-listen]").forEach(el=>{el.textContent=el.dataset.idle;el.setAttribute("aria-pressed","false");});
+ document.querySelectorAll("#result-music-recommendation [data-player]").forEach(el=>{el.textContent="00:00 / 00:30";});
+}
 resultDialog.addEventListener("close",stopResultMusic);
 new MutationObserver(()=>{if(!resultDialog.open)stopResultMusic();}).observe(resultDialog,{attributes:true,attributeFilter:["open"]});
+function loadResultPreviews(){
+ if(resultPreviewCache)return resultPreviewCache;
+ resultPreviewCache=new Promise((resolve,reject)=>{
+  const cb="__kiraraPreview"+Date.now(), script=document.createElement("script");
+  let timer;const clean=()=>{clearTimeout(timer);script.remove();delete window[cb];};
+  window[cb]=data=>{clean();resolve((data.results||[]).filter(x=>x.wrapperType==="track"&&x.kind==="song"&&x.artistName.toLowerCase()==="kirara"&&x.collectionName.toLowerCase()==="sarah"&&x.previewUrl));};
+  script.onerror=()=>{clean();reject(new Error("Preview unavailable"));};
+  timer=setTimeout(()=>{clean();reject(new Error("Preview timeout"));},8000);
+  script.src="https://itunes.apple.com/lookup?id=1856541802&entity=song&country=us&callback="+cb;
+  document.head.append(script);
+ }).catch(e=>{resultPreviewCache=null;throw e;});
+ return resultPreviewCache;
+}
 function renderMusicRecommendation(reading){
  const ko=language==="ko";
  let section=document.getElementById("result-music-recommendation");
- if(!section){
-  section=document.createElement("section");section.id="result-music-recommendation";
-  section.style.cssText="border-top:1px solid #666;margin-top:12px;padding-top:12px;display:grid;gap:7px;min-width:0";
-  document.querySelector(".result-interpretation").append(section);
- }
  stopResultMusic();
- const heading=document.createElement("h3");heading.textContent=ko?"추천 음악":"RECOMMENDED TRACK";
+ if(section&&section.tagName!=="SECTION"){section.remove();section=null;}
+ if(!section){section=document.createElement("section");section.id="result-music-recommendation";document.querySelector(".result-interpretation").append(section);}
+ section.style.cssText="border-top:1px solid #666;margin-top:12px;padding-top:12px;display:grid;gap:9px;min-width:0";
+ const heading=document.createElement("strong");heading.textContent=ko?"+ 추천 음악":"+ RECOMMENDED TRACK";
  const items=reading.ranked.slice(0,2).map(([sample,count],index)=>{
-  const track=musicMatches[sample.id]; if(!track)return null;
-  const item=document.createElement("div");item.style.cssText="display:grid;gap:5px;margin-bottom:5px";
-  const name=document.createElement("strong");name.textContent=(index? (ko?"보조 추천 / ":"SECONDARY / "):"")+"KIRARA — "+track[ko?1:0];name.style.color="#00dedd";
+  const track=musicMatches[sample.id];if(!track)return null;
+  const item=document.createElement("div");item.style.cssText="display:grid;gap:6px;margin-bottom:5px";
+  const name=document.createElement("strong");name.textContent=(index?(ko?"보조 추천 / ":"SECONDARY / "):"")+"KIRARA — "+track[ko?1:0];name.style.color="#00dedd";
   const reason=document.createElement("p");reason.textContent=track[ko?3:2];
-  const link=document.createElement("a");link.href="https://www.youtube.com/results?search_query="+encodeURIComponent("KIRARA "+track[1]+" official audio");link.target="_blank";link.rel="noopener noreferrer";link.textContent=ko?"곡 찾아 듣기 ↗":"FIND TRACK ↗";link.style.cssText="color:#00dedd;text-decoration:underline";
-  link.href="https://stqpkiraradongjae.bandcamp.com/track/"+resultBandcamp[sample.id];link.textContent=ko?"공식 음원 페이지 ↗":"OFFICIAL TRACK ↗";
-  const play=document.createElement("button");play.type="button";play.dataset.listen=sample.id;play.setAttribute("aria-expanded","false");play.textContent=ko?"▶ 음악 듣기":"▶ LISTEN";play.style.cssText="border:1px solid #00aaaa;background:#000;color:#00dedd;font:inherit;padding:8px;cursor:pointer;text-align:left";
-  const player=document.createElement("div");player.dataset.player="true";player.style.minWidth="0";
-  play.addEventListener("click",()=>{
-   const wasOpen=play.getAttribute("aria-expanded")==="true";stopResultMusic();if(wasOpen)return;
-   const frame=document.createElement("iframe");frame.title="KIRARA — "+track[0];frame.allow="autoplay; encrypted-media; fullscreen; picture-in-picture";frame.referrerPolicy="strict-origin-when-cross-origin";frame.style.cssText="display:block;width:100%;border:0;background:#000";
-   if(resultVideos[sample.id]){frame.src="https://www.youtube-nocookie.com/embed/"+resultVideos[sample.id]+"?autoplay=1&rel=0";frame.style.height="max(200px, 15vw)";frame.allowFullscreen=true;}
-   else{frame.src="https://open.spotify.com/embed/album/6cce6K1y8SQL0eGZgSzpCC?theme=0";frame.style.height="352px";const hint=document.createElement("small");hint.textContent=ko?"앨범 플레이어에서 "+track[1]+" 곡을 선택해 주세요.":"Select "+track[0]+" in the album player.";player.replaceChildren(hint);}
-   player.append(frame);play.setAttribute("aria-expanded","true");
+  const link=document.createElement("a");link.href="https://music.apple.com/us/album/sarah/1856541802";link.target="_blank";link.rel="noopener noreferrer";link.textContent=ko?"Apple Music에서 듣기 ↗":"OPEN IN APPLE MUSIC ↗";link.style.cssText="color:#aaa;text-decoration:underline;font-size:.85em";
+  const row=document.createElement("div");row.style.cssText="display:flex;align-items:center;gap:10px;border:1px solid #666;padding:6px;min-width:0";
+  const play=document.createElement("button");play.type="button";play.dataset.listen=sample.id;play.dataset.idle=ko?"▶ 미리듣기":"▶ PREVIEW";play.textContent=play.dataset.idle;play.setAttribute("aria-pressed","false");play.style.cssText="border:1px solid #00aaaa;background:#000;color:#00dedd;font:inherit;padding:7px;cursor:pointer;white-space:nowrap";
+  const player=document.createElement("span");player.dataset.player="true";player.setAttribute("aria-live","polite");player.textContent="00:00 / 00:30";player.style.cssText="font-variant-numeric:tabular-nums;color:#bbb;min-width:0";
+  play.addEventListener("click",async()=>{
+   const active=play.getAttribute("aria-pressed")==="true";stopResultMusic();if(active)return;
+   const generation=resultPreviewGeneration;play.setAttribute("aria-pressed","true");play.textContent=ko?"■ 정지":"■ STOP";player.textContent=ko?"불러오는 중":"LOADING";
+   try{
+    const tracks=await loadResultPreviews();if(generation!==resultPreviewGeneration||!resultDialog.open)return;
+    const match=tracks.find(x=>x.trackName.toLowerCase()===track[0].toLowerCase()||x.trackName===track[1]);if(!match)throw new Error("No preview");
+    const audio=new Audio(match.previewUrl);resultPreviewAudio=audio;audio.volume=.45;
+    const finish=()=>{if(resultPreviewAudio===audio)stopResultMusic();};
+    audio.addEventListener("timeupdate",()=>{if(resultPreviewAudio!==audio)return;const limit=Math.min(30,Number.isFinite(audio.duration)?audio.duration:30);if(audio.currentTime>=limit){finish();return;}player.textContent="00:"+String(Math.floor(audio.currentTime)).padStart(2,"0")+" / 00:"+String(Math.floor(limit)).padStart(2,"0");});
+    audio.addEventListener("ended",finish);audio.addEventListener("error",()=>{if(resultPreviewAudio===audio){finish();player.textContent=ko?"재생 불가":"UNAVAILABLE";}});
+    await audio.play();
+   }catch(e){if(generation===resultPreviewGeneration){stopResultMusic();player.textContent=ko?"미리듣기 불가 · 링크 이용":"UNAVAILABLE · USE LINK";}}
   });
-  item.append(name,reason,play,player,link);return item;
+  row.append(play,player);item.append(name,reason,row,link);return item;
  }).filter(Boolean);
- const note=document.createElement("small");note.textContent=ko?"그래픽 조각 비율에 따른 예술적 추천이며 실제 감정 진단이 아닙니다.":"Artistic match based on fragment shares, not an emotion diagnosis.";
+ const note=document.createElement("small");note.textContent=ko?"Apple Music 제공 미리듣기 · 최대 30초. 그래픽 조각 비율에 따른 예술적 추천입니다.":"Apple Music preview · up to 30 sec. Artistic match based on fragment shares, not an emotion diagnosis.";
  section.replaceChildren(heading,...items,note);
+ loadResultPreviews().catch(()=>{});
 }
 
 function renderExperiment(result){
