@@ -7,13 +7,13 @@
   <meta name="description" content="Choose a cell, combine fragments from six emotion graphics, and observe how the composition changes the signal.">
   <title>KIRARA : LAB — Emotion Fragment Experiment</title>
   <link rel="stylesheet" href="./lab.css?v=particle1">
-  <link rel="stylesheet" href="./layout-v1.css?v=svg-right1">
+  <link rel="stylesheet" href="./layout-v1.css?v=right-detail2">
   <script src="./signal.js" defer=""></script>
   <script src="./interpretation.js" defer=""></script>
   <script src="./motifs.js?v=buttonfix1" defer=""></script>
   <script src="./audio.js" defer=""></script>
   <link rel="stylesheet" href="./kirara-intro.css">
-  <script src="./lab.js?v=warning3" defer=""></script>
+  <script src="./lab.js?v=right-detail2" defer=""></script>
   <script src="./emotion-particles.js?v=orbit2" defer></script>
   <script src="./kirara-intro.js" defer=""></script>
 </head>
@@ -94,7 +94,7 @@
           <p class="simulated" data-ko="시뮬레이션 · 작품 신호">SIMULATED / ART SIGNAL</p>
           
         </div>
-        <figure class="mri"><img src="./brain-sagittal.jpg" alt="Sagittal brain MRI" width="240" height="271"></figure>
+        <figure class="mri"><img src="./brain.png" alt="Sagittal brain MRI" width="206" height="155"></figure>
         <div class="channel-frame"><p id="signal-tone" class="signal-tone">SIGNAL / IDLE</p><dl class="channels">
           <div><dt id="label-pfc">PFC</dt><dd><output id="value-pfc">0.00</output><meter id="meter-pfc" aria-labelledby="label-pfc" min="0" max="1" value="0"></meter></dd></div>
           <div><dt id="label-amy">AMY</dt><dd><output id="value-amy">0.00</output><meter id="meter-amy" aria-labelledby="label-amy" min="0" max="1" value="0"></meter></dd></div>
@@ -114,7 +114,7 @@
       </section>
       <footer class="run">
         <div class="scan-panel-heading"><span data-ko="스캔">+ SCAN</span><button type="button" id="scan-more" aria-expanded="false" aria-controls="run-details-scroll" data-ko="상세 정보 →">MORE INFORMATION →</button></div>
-        <div class="scan-summary"><span class="scan-summary-space" aria-hidden="true"></span><dl><div><dt data-ko="선택 칸:">CELL:</dt><dd id="scan-cell-value">(A)</dd></div><div><dt data-ko="감정 종류:">EMOTION TYPES:</dt><dd id="scan-types-value">(0)</dd></div><div><dt data-ko="조각:">FRAGMENTS:</dt><dd id="scan-fragments-value">(0)</dd></div></dl></div>
+        <div class="scan-summary"><div class="scan-summary-space"><canvas id="scan-live-preview" width="160" height="240" aria-label="Active cell preview"></canvas></div><dl><div><dt data-ko="선택 칸:">CELL:</dt><dd id="scan-cell-value">(A)</dd></div><div><dt data-ko="감정 종류:">EMOTION TYPES:</dt><dd id="scan-types-value">(0)</dd></div><div><dt data-ko="조각:">FRAGMENTS:</dt><dd id="scan-fragments-value">(0)</dd></div></dl></div>
         <div class="run-details">
           <div id="run-details-scroll" class="run-details-scroll" tabindex="-1">
             <section id="scan-record" class="scan-record" aria-labelledby="scan-record-title" hidden="">

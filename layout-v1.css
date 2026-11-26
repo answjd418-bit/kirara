@@ -588,3 +588,33 @@ body{background:#000}
  .readouts .run-actions{grid-template-columns:1fr 1fr;gap:0;}
  .readouts .run-actions button{font:400 .75em/1.1 var(--mono);min-height:calc(30 * var(--ry));padding:.2em;}
 }
+
+/* Reference detail pass: MRI, waveform, channel dividers and live scan preview. */
+.readouts .mri img{transform:none!important;object-fit:contain;object-position:center;filter:none;}
+.readouts .scope #scope{background:#000;}
+.readouts .channel-frame .channels{position:relative;}
+.readouts .channel-frame .signal-tone::after{width:19.5%;}
+.readouts .channel-frame .channels::before{content:'';position:absolute;top:0;bottom:0;right:19.5%;width:1px;background:#777;pointer-events:none;}
+.readouts .channels output{position:relative;z-index:1; background:#000; font-weight:400;}
+.readouts .channels output::before{content:'\2014 ';color:#ddd;}
+.readouts .channels dt{font:400 1em/1 var(--mono);}
+.readouts .channels meter{appearance:none;border:0;border-radius:0;background:#666;}
+.readouts .channels meter::-webkit-meter-bar{border:0;border-radius:0;background:#666;}
+.readouts .channels meter::-webkit-meter-optimum-value{border-radius:0;background:#00dce4;}
+.readouts .channels meter::-moz-meter-bar{border-radius:0;background:#00dce4;}
+.readouts .scan-summary-space{display:grid;place-items:center;min-width:0;min-height:0;overflow:hidden;}
+#scan-live-preview{display:block;width:100%;height:100%;object-fit:contain;min-height:0;max-height:100%;}
+.readouts .scan-summary dl>div{align-items:center;}
+@media(min-width:1081px){
+ .readouts .mri img{padding:calc(24 * var(--ry)) calc(43 * var(--rx));}
+ .readouts .channel-frame .channels{padding:calc(22 * var(--ry)) calc(10 * var(--rx));}
+ .readouts .channels dd{grid-template-columns:minmax(0,1fr) 6ch;gap:calc(5 * var(--rx));}
+ .readouts .channels meter{height:calc(7 * var(--ry));}
+ .readouts .scan-summary{grid-template-columns:27.5% minmax(0,1fr);height:calc(101 * var(--ry));}
+ .readouts .scan-summary dl{padding:0 calc(9 * var(--rx));font-size:1em;min-width:0;}
+ .readouts .scan-summary dl>div{gap:0;}
+ .readouts .scan-summary dt{font-weight:400;letter-spacing:-.035em;}
+ .readouts .scan-panel-heading{font-size:1em;}
+ .readouts #scan-more{font-size:.84em;}
+ .readouts .run-actions button{font-size:.72em;white-space:nowrap;}
+}

@@ -543,21 +543,21 @@ function drawScope(seconds,impact){
   const {width:w,height:h}=scope;
   signal.clearRect(0,0,w,h);
   signal.lineWidth=.7;
-  signal.strokeStyle="#343638";
-  for(let i=1;i<8;i++){
+  signal.strokeStyle="#555";
+  for(let i=1;i<14;i++){
     signal.beginPath();
-    signal.moveTo(i*w/8,0);
-    signal.lineTo(i*w/8,h);
+    signal.moveTo(i*w/14,0);
+    signal.lineTo(i*w/14,h);
     signal.stroke();
   }
-  for(let i=1;i<6;i++){
+  for(let i=1;i<5;i++){
     signal.beginPath();
-    signal.moveTo(0,i*h/6);
-    signal.lineTo(w,i*h/6);
+    signal.moveTo(0,i*h/5);
+    signal.lineTo(w,i*h/5);
     signal.stroke();
   }
   signal.lineWidth=1.15+(impact?.pulse||0)*.8;
-  signal.strokeStyle=scopeColor;
+  signal.strokeStyle="#00dce4";
   signal.beginPath();
   const [balance,brightness,overlap,pulse]=readings;
   for(let x=0;x<w;x++){
@@ -724,6 +724,16 @@ function animate(now){
       }else{
         paintScanSweep(cell.pen,cell.canvas.width,cell.canvas.height,sweep.progress,sweep.pulse);
       }
+    }
+  }
+  const livePreview=document.getElementById("scan-live-preview");
+  if(livePreview){
+    const ctx=livePreview.getContext("2d"), active=cells.get(selected);
+    const w=livePreview.width,h=livePreview.height;
+    ctx.clearRect(0,0,w,h);
+    if(active?.layers.length){
+      const source=active.canvas, scale=Math.min(w/source.width,h/source.height)*.94;
+      if(Number.isFinite(scale)&&scale>0)ctx.drawImage(source,(w-source.width*scale)/2,(h-source.height*scale)/2,source.width*scale,source.height*scale);
     }
   }
   if(resultDialog.open&&!motion.matches){
