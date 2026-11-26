@@ -215,6 +215,41 @@ reportStyle.textContent=`
  #result-dialog .result-shares[open] #result-sources{position:static;box-shadow:none;padding:3px;}
 }
 
+
+/* Typography rhythm: based on the supplied black retro reference. */
+#result-dialog .retro-titlebar {letter-spacing:.025em;}
+#result-dialog .retro-titlebar strong {line-height:1.35;}
+#result-dialog .retro-path {letter-spacing:0;}
+#result-dialog .result-report-header>p:first-child,#result-dialog .result-artwork figcaption {letter-spacing:.025em;line-height:1.3;font-weight:400;}
+#result-dialog .result-report-header>p:first-child {margin-bottom:4px;}
+#result-dialog .result-body h3 {font:600 1em/1.35 var(--mono,monospace);letter-spacing:.015em;margin:0 0 .45em;}
+#result-dialog #result-description,#result-dialog #result-evidence {line-height:1.5;letter-spacing:.012em;word-break:keep-all;overflow-wrap:break-word;}
+#result-dialog #result-evidence {margin-top:.3em;}
+#result-dialog .result-footnote {line-height:1.4;}
+#result-dialog .result-signals>div {line-height:1.5;letter-spacing:.012em;}
+#result-dialog .result-signals output {font-variant-numeric:tabular-nums;}
+#result-dialog .result-signals dd {min-width:4ch;}
+#result-dialog .result-report-header,#result-dialog .result-interpretation,#result-dialog .retro-parameters,#result-dialog .result-scan {flex:none;}
+@media(min-width:760px) and (min-height:560px){
+ #result-dialog .result-body {font-size:clamp(10px,calc(var(--window-w) * .0135),15px);line-height:1.4;}
+ #result-dialog .result-report-reading {padding:6px 10px 8px;gap:clamp(6px,calc(var(--window-w) * .009),10px);}
+ #result-dialog .result-report-plate {padding:6px 7px 7px;gap:8px;}
+ #result-dialog .result-report-header {gap:5px;padding-bottom:8px;}
+ #result-dialog .result-report-header>p:first-child {margin:0 -4px 4px;width:calc(100% + 8px);max-width:none;}
+ #result-dialog .result-report-header>p:first-child,#result-dialog .result-artwork figcaption {font-size:1.17em;padding:5px 8px;}
+ #result-dialog #result-cell {font-size:1em;line-height:1.4;}
+ #result-dialog #result-title {font-size:1.38em;line-height:1.3;margin:1px 0;}
+ #result-dialog #result-feelings {line-height:1.4;}
+ #result-dialog .result-interpretation {gap:4px;}
+ #result-dialog .retro-parameters {padding-top:7px;gap:3px;}
+ #result-dialog .result-signals {gap:3px;padding:0 1px;}
+ #result-dialog .result-scan {padding-top:7px;gap:4px;}
+ #result-dialog .result-scan-data dl {line-height:1.4;gap:4px;}
+ #result-dialog .result-artwork {gap:7px;}
+ #result-dialog #result-music-recommendation {font-size:.91em;line-height:1.45;gap:5px!important;padding-top:7px!important;}
+ #result-dialog .retro-footer {padding:4px 8px;gap:8px;line-height:1.35;}
+}
+
 `;
 document.head.append(reportStyle);
 const reportCaption=$("#result-artwork-title");
