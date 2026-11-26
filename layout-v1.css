@@ -312,3 +312,15 @@ body{background:#000}
 }
 .console .sources-frame .emotion:not(:disabled):is(:hover,:focus-visible) small { color: #e5e5e5; }
 @media (prefers-reduced-motion:reduce) { .console .sources-frame .emotion { transition: none; } }
+
+/* Reference header: compact title, two-line introduction, clear console breathing room. */
+.masthead .mast-copy{max-width:none;flex:0 1 auto;min-width:0;}
+.masthead .brand{font-family:var(--mono);font-size:clamp(15px,1.24vw,22px);font-weight:400;letter-spacing:0;text-underline-offset:.14em;white-space:nowrap;color:#eee;}
+.masthead .brand strong{font-weight:600;}
+.masthead .mast-description{font-family:var(--mono);font-weight:400;font-size:clamp(11px,.96vw,17px);line-height:1.6;letter-spacing:0;margin-top:.35rem;}
+.mast-description span{display:block;}
+.mast-description span+span{padding-left:4ch;}
+.console .console-controls-panel>h2,.console .console-controls-panel>.instructions{position:absolute!important;width:1px;height:1px;padding:0!important;margin:-1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0!important;}
+@media(min-width:1081px){.lab>.console{margin-top:clamp(35px,10vh,105px);}}
+@media(min-width:1081px) and (max-height:720px){.lab>.console{margin-top:clamp(12px,5vh,36px);}}
+@media(max-width:620px){.masthead .mast-copy{max-width:75vw;}.masthead .brand{white-space:normal;}.mast-description span+span{padding-left:1ch;}}
