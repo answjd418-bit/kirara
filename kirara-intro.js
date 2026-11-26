@@ -12,7 +12,7 @@
  const voices=new Set();
  const base=new URL('./intro-sounds/',document.currentScript.src);
  const files=[1,2,3,4].map(n=>new URL(n+'.mp3',base));
- const raw=Promise.all(files.map(url=>fetch(url).then(r=>{if(!r.ok)throw Error('Intro sound '+r.status);return r.arrayBuffer()}).catch(()=>null)));
+ const raw=files.map(url=>fetch(url).then(r=>{if(!r.ok)throw Error('Intro sound '+r.status);return r.arrayBuffer()}).catch(e=>{console.warn('Intro audio fetch',url.href,e);return null}));
  function cue(i,level,duration,when=0){
   if(!ac||ac.state!=='running'||!buffers[i])return;
   const src=ac.createBufferSource(),gain=ac.createGain();src.buffer=buffers[i];
@@ -22,15 +22,17 @@
   src.connect(gain);gain.connect(master);voices.add(src);src.onended=()=>{voices.delete(src);src.disconnect();gain.disconnect()};src.start(at,0,len);return src;
  }
  function silence(){for(const v of voices){try{v.stop()}catch{}}voices.clear()}
- const startButton=document.createElement('button');startButton.type='button';startButton.textContent='CLICK TO INITIALIZE / SOUND ON';
- startButton.setAttribute('aria-label','Start intro with sound');
- Object.assign(startButton.style,{position:'absolute',left:'50%',top:'50%',transform:'translate(-50%,-50%)',zIndex:'3',background:'#000',color:'#ddd',border:'1px solid #666',padding:'12px 18px',font:'400 12px Roboto Mono, monospace',letterSpacing:'.04em',cursor:'pointer',whiteSpace:'nowrap'});
- it.appendChild(startButton);
- async function startIntro(){if(started||loading)return;loading=true;startButton.textContent='INITIALIZING...';
-  try{if(AC){ac=new AC();master=ac.createGain();master.gain.value=.8;const limiter=ac.createDynamicsCompressor();limiter.threshold.value=-12;limiter.ratio.value=8;master.connect(limiter);limiter.connect(ac.destination);await ac.resume();const bytes=await Promise.race([raw,new Promise(resolve=>setTimeout(()=>resolve([]),1800))]);buffers=await Promise.all(bytes.map(b=>b?ac.decodeAudioData(b.slice(0)).catch(()=>null):null));}}catch(e){console.warn('Intro audio unavailable',e)}
-  if(!alive)return;started=true;startButton.remove();t0=last=performance.now();it.style.background='transparent';cue(0,.9,.8);requestAnimationFrame(frame);
+ // Start visuals immediately; audio loading must never block the animation.
+ function unlock(){if(ac&&ac.state!=='running')ac.resume().catch(()=>{});}
+ function startIntro(){if(started)return;started=true;t0=last=performance.now();it.style.background='transparent';
+  if(AC){try{ac=new AC();master=ac.createGain();master.gain.value=1.5;const limiter=ac.createDynamicsCompressor();limiter.threshold.value=-6;limiter.ratio.value=8;master.connect(limiter);limiter.connect(ac.destination);unlock();
+   files.forEach((url,i)=>{raw[i].then(b=>b&&ac.decodeAudioData(b)).then(buf=>{if(alive&&buf)buffers[i]=buf;}).catch(e=>console.warn('Intro sound decode',i+1,e));});
+  }catch(e){console.warn('Intro audio unavailable',e)}}
+  requestAnimationFrame(frame);
  }
- startButton.addEventListener('click',e=>{e.stopPropagation();startIntro()});
+ const unlockEvent=()=>{if(alive)unlock()};
+ window.addEventListener('pointerdown',unlockEvent,true);
+ window.addEventListener('keydown',unlockEvent,true);
  const fit=()=>{const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;g.setTransform(d,0,0,d,0,0);R=Math.min(W,H)*(W<700?.4:.34);cx=W/2;cy=H/2};
  fit();addEventListener('resize',fit);
  it.addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY});
@@ -45,22 +47,24 @@
  const LOG=[['loading emotion fragments','06'],['calibrating optical lens','OK'],['reading brain response','LIVE'],['synthesizing structure','...']];
  const bar=v=>'█'.repeat(Math.round(v*10))+'░'.repeat(10-Math.round(v*10));
  const skip=()=>{if(!started){startIntro();return}if(!exitT&&performance.now()-t0>400){silence();exitT=performance.now()}};
- it.addEventListener('pointerdown',e=>{if(e.target===startButton||!started)return;e.preventDefault();skip()});
+ // Clicking the intro unlocks sound without skipping the animation.
  addEventListener('keydown',e=>{if(e.key==='Escape')skip()});
- const finish=()=>{if(!alive)return;alive=false;silence();if(ac)ac.close().catch(()=>{});it.remove();document.documentElement.classList.remove('kr-lock')};
+ const finish=()=>{if(!alive)return;alive=false;window.removeEventListener('pointerdown',unlockEvent,true);window.removeEventListener('keydown',unlockEvent,true);silence();if(ac)ac.close().catch(()=>{});it.remove();document.documentElement.classList.remove('kr-lock')};
  let fired=false;
  const T_SYN=2.3,T_DONE=4.9,T_EXIT=5.3,IRIS=1.4;
- let scanVoice=null,scanPlayed=false,phase3Started=false;
+ let scanVoice=null,scanPlayed=false,bootPlayed=false,exitPlayed=false,phase3Started=false;
  P.forEach((p,i)=>{p.lockAt=T_SYN+.05+(T_DONE-T_SYN-.45)*i/Math.max(1,N-1);p.sounded=false});
  function frame(now){if(!alive)return;
   const dt=Math.min(.05,(now-last)/1000);last=now;
   let T=RM?T_EXIT:(now-t0)/1000;if(exitT)T=Math.max(T,T_EXIT);
   if(!exitT&&T>=T_EXIT)exitT=now;
-  if(!exitT&&!scanPlayed&&T>=.8){scanPlayed=true;scanVoice=cue(1,.85,T_SYN-.8)}
+  if(!exitT&&T<.8&&!bootPlayed){bootPlayed=!!cue(0,2.5,.8-T)}
+  if(!exitT&&!scanPlayed&&T>=.8&&T<T_SYN){scanVoice=cue(1,2.5,T_SYN-T);scanPlayed=!!scanVoice}
   if(!exitT&&T>=T_SYN&&!phase3Started){phase3Started=true;if(scanVoice){try{scanVoice.stop()}catch{}}}
-  if(!exitT&&phase3Started){let tick=0;for(const p of P){if(!p.sounded&&T>=p.lockAt){p.sounded=true;p.hit=1;cue(2,.065,.075,tick++*.002)}}}
+  if(!exitT&&phase3Started){let tick=0;for(const p of P){if(!p.sounded&&T>=p.lockAt){p.sounded=true;p.hit=1;cue(2,.32,.075,tick++*.004)}}}
   const iris=exitT?Math.min(1,(now-exitT)/1000/IRIS):0;
-  if(exitT&&!fired){fired=true;silence();cue(3,1,1.032);it.classList.add('kr-done');document.documentElement.classList.remove('kr-lock');window.dispatchEvent(new CustomEvent('kirara:enter'))}
+  if(exitT&&!fired){fired=true;silence();it.classList.add('kr-done');document.documentElement.classList.remove('kr-lock');window.dispatchEvent(new CustomEvent('kirara:enter'))}
+  if(exitT&&!exitPlayed&&iris<.65){exitPlayed=!!cue(3,4.0,Math.min(1.032,IRIS*(1-iris)))}
   if(iris>=1){finish();return}
   const boot=sm(0,.8,T),syn=sm(T_SYN,T_DONE-.2,T),done=sm(T_DONE-.15,T_DONE+.1,T);
   /* --- physics --- */
@@ -100,5 +104,5 @@
   if(syn>.15){g.strokeStyle=`rgba(255,255,255,${.12*syn*(1-sm(0,.5,iris))})`;g.beginPath();for(let i=0;i<P.length;i+=7){const a=P[i],b=P[(i*13+5)%P.length];g.moveTo(a.x*R*zoom,a.y*R*zoom);g.lineTo(b.x*R*zoom,b.y*R*zoom)}g.stroke()}
   g.restore();
   requestAnimationFrame(frame)}
- // The initial click unlocks browser audio before the animation begins.
+ startIntro();
 })();
