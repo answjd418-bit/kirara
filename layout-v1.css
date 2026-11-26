@@ -638,3 +638,35 @@ body{background:#000}
   .readouts .run-actions{grid-template-columns:1fr; margin-top:calc(12 * var(--ry));}
   .readouts .run-actions button{min-height:calc(28 * var(--ry));}
 }
+
+/* Fit the right instruments inside the initial desktop viewport. */
+@media(min-width:1081px){
+ .masthead .mast-tools{align-self:flex-start;margin-top:0;transform:none;}
+ .lab > .readouts{--ry:calc( (100dvh - max(82px,var(--lab-page-top,82px)) - 24px) / 850 );--ru:min(var(--rx),var(--ry));margin-top:0;}
+ .readouts .brain > .mri{height:calc(180 * var(--ry));}
+ .readouts .brain > .brain-main{height:calc(64 * var(--ry));}
+ .readouts .brain > .scope{margin-top:calc(26 * var(--ry));height:calc(126 * var(--ry));}
+ .readouts .brain > .channel-frame{margin-top:calc(26 * var(--ry));height:calc(185 * var(--ry));}
+ .readouts .brain > .scope::after,.readouts .brain > .channel-frame::after{height:calc(26 * var(--ry));}
+ .readouts > .run{margin-top:calc(42 * var(--ry));overflow:visible;}
+ .readouts .scan-panel-heading{height:calc(36 * var(--ry));}
+ .readouts .scan-summary{height:calc(100 * var(--ry));min-height:0;}
+ .readouts .run-actions{grid-template-columns:1fr 1fr;margin-top:0;gap:0;border-top:1px solid #666;}
+ .readouts .run-actions button{min-height:calc(34 * var(--ry));white-space:normal;border:0;border-right:1px solid #666;}
+ .readouts .run-actions button:last-child{border-right:0;}
+}
+/* Preserve the full bar track even when the inherited grid rules shrink it. */
+.readouts .channel-frame .channels>div{grid-template-columns:3ch minmax(0,1fr);width:100%;}
+.readouts .channel-frame .channels dd{display:grid;grid-template-columns:minmax(0,1fr) 5.5ch;width:100%;min-width:0;}
+.readouts .channel-frame .channels .signal-meter{display:block;min-width:0;width:100%;}
+
+/* E cell interactive outline */
+.stage .cell.e:is(:hover,:focus-visible,[aria-pressed=true])::before { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M33 0H100L67 100H0Z' fill='none' stroke='%2300e2e8' stroke-width='.4' stroke-dasharray='1 1'/%3E%3Cpath d='M33 5V0H40M93 0H100L98 5M2 95L0 100H7M60 100H67L69 95' fill='none' stroke='%2300e2e8' stroke-width='.65'/%3E%3C/svg%3E"); z-index:2; }
+
+/* E cell interactive outline */
+@media(max-width:620px){
+.stage .cell.e:is(:hover,:focus-visible,[aria-pressed=true])::before { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M22 0H100L78 100H0Z' fill='none' stroke='%2300e2e8' stroke-width='.4' stroke-dasharray='1 1'/%3E%3Cpath d='M22 5V0H29M93 0H100L98 5M2 95L0 100H7M71 100H78L80 95' fill='none' stroke='%2300e2e8' stroke-width='.65'/%3E%3C/svg%3E"); z-index:2; }
+}
+
+.stage .cell.e:is(:hover,:focus-visible,[aria-pressed=true]) { --frame:#00e2e8; background:#00e2e80a; }
+.stage .cell.e:is(:hover,:focus-visible,[aria-pressed=true]) .cell-label { color:#00e2e8; }
