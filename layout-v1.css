@@ -328,7 +328,7 @@ body{background:#000}
 /* Reference proportions: 1640 x 920 desktop composition. */
 @media (min-width:1081px) {
   .lab > .console {
-    --console-unit: clamp(9px, min(.82vw,1.44vh), 15px);
+    --console-unit: clamp(9px, min(.833333vw,1.481482vh), 16px);
     margin-top: clamp(24px, 10.3vh, 112px);
     gap: clamp(8px, 1.2vh, 14px);
   }
@@ -346,7 +346,7 @@ body{background:#000}
   .console .emotion > span:not(.id) { font-weight:400; }
   .console .emotion small { font-size:.9em; line-height:1.25; }
   .console .console-state { font-size:.82em; }
-  .readouts { font-size:clamp(9px,min(.82vw,1.44vh),15px); }
+  .readouts { font-size:clamp(9px,min(.833333vw,1.481482vh),16px); }
   .masthead .brand { font-size:clamp(15px,1.24vw,24px); }
   .masthead .mast-description { font-size:clamp(11px,.96vw,18px); }
 }
