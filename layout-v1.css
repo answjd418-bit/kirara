@@ -778,3 +778,12 @@ body{background:#000}
  .stage .cell.e::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 323 413' preserveAspectRatio='none'%3E%3Cpath d='M108.754 0H323L214.25 413H0Z' fill='none' stroke='%23777' stroke-width='1' stroke-dasharray='4 4'/%3E%3Cpath d='M103.487 20L108.754 0H130M302 0H323L317.733 20M5.267 393L0 413H21M193.25 413H214.25L219.517 393' fill='none' stroke='%23eee' stroke-width='2'/%3E%3C/svg%3E");}
  .stage .cell.e:is(:hover,:focus-visible,[aria-pressed=true])::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 323 413' preserveAspectRatio='none'%3E%3Cpath d='M108.754 0H323L214.25 413H0Z' fill='none' stroke='%23777' stroke-width='1' stroke-dasharray='4 4'/%3E%3Cpath d='M103.487 20L108.754 0H130M302 0H323L317.733 20M5.267 393L0 413H21M193.25 413H214.25L219.517 393' fill='none' stroke='%2300e2e8' stroke-width='2'/%3E%3C/svg%3E");}
 }
+
+/* Align cell C with the full MRI and brain-response instrument. */
+@media(min-width:1081px){
+ .stage .cell.c{top:calc(73 * var(--left-y));height:calc(263 * var(--left-y));}
+}
+.stage .cell-note{display:none;}
+.readouts .inline-asset-credits{display:block;position:static;margin:.6em 0 0;padding:.4em 0 0;border-top:1px solid #666;font-size:.85em;}
+.readouts .inline-asset-credits details{margin:.35em 0;}
+.readouts .inline-asset-credits a{color:inherit;overflow-wrap:anywhere;}

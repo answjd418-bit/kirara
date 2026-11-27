@@ -292,6 +292,17 @@ const retroFooter=document.createElement("footer");retroFooter.className="retro-
 const retroReady=document.createElement("span");retroReady.className="retro-status";retroReady.textContent="Ready. | Commands:";retroReady.dataset.ko="분석 완료. | 명령:";
 retroFooter.append(retroReady,$(".result-report-actions"),exportStatus);resultDialog.append(retroFooter);
 
+// v2 alignment: update the action label before collecting bilingual copy.
+runButton.textContent="ANALYZE";
+runButton.dataset.ko="분석";
+// Keep required asset attribution accessible, without a separate page footer.
+const assetCredits=document.querySelector(".site-info");
+const creditHost=document.querySelector(".readouts .signal-info");
+if(assetCredits&&creditHost){
+  assetCredits.classList.remove("site-info");
+  assetCredits.classList.add("inline-asset-credits");
+  creditHost.append(assetCredits);
+}
 const defaultCopy=new Map([...document.querySelectorAll("[data-ko]")].map(node=>[node,node.textContent]));
 const floating = [
   [2,0,.13,.17,62],[3,1,.59,.32,51],[1,0,.75,.42,47],
