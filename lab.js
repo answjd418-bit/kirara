@@ -47,8 +47,8 @@ const samples = [
   {id:"E01",en:"Emotional Lostness",ko:"정서적 미아",color:"#48dae9",pulse:.39},
   {id:"E02",en:"Overload",ko:"과부하",color:"#ff7482",pulse:.81},
   {id:"E03",en:"Glitched Excitement",ko:"고장난 설렘",color:"#f767df",pulse:.95},
-  {id:"E04",en:"Chain Liberation",ko:"연쇄적 해방감",color:"#cdf677",pulse:.68},
-  {id:"E05",en:"Unpaid Affection",ko:"무급 애정",color:"#70f5df",pulse:.57},
+  {id:"E04",en:"Cascading Release",ko:"연쇄적 해방감",color:"#cdf677",pulse:.68},
+  {id:"E05",en:"Unrequited Devotion",ko:"무급 애정",color:"#70f5df",pulse:.57},
   {id:"E06",en:"Overheated Pride",ko:"과열된 자존심",color:"#fa7e61",pulse:.74}
 ];
 // These settings describe the compositions' visual character.
@@ -60,7 +60,7 @@ const stage = $("#stage");
 const menu = $("#emotions");
 const canvasPointer={x:.5,y:.5,currentX:.5,currentY:.5,time:0,hot:false,tappedUntil:0};
 const cellPointer={slot:null,x:.5,y:.5,speed:0,time:0};
-let glitchEnabled=!motion.matches;
+let glitchEnabled=false;
 let frameCount=0;
 let frameStarted=performance.now();
 const dustRandom=fragmentSignalRandom(9703);
@@ -377,14 +377,16 @@ function notify(key,...values){
 }
 
 function makeMenu(){
-  for(const sample of samples){
+  const menuOrder=["E01","E06","E04","E03","E05","E02"];
+  for(const [index,key] of menuOrder.entries()){
+    const sample=samples.find(item=>item.id===key);
     const button=document.createElement("button");
     button.className="emotion";
     button.type="button";
     button.style.setProperty("--emotion",sample.color);
     const id=document.createElement("span");
     id.className="id";
-    id.textContent=sample.id;
+    id.textContent="#"+String(index+1).padStart(2,"0");
     const name=document.createElement("span");
     const translation=document.createElement("small");
     button.append(id,name,translation);
@@ -1361,6 +1363,13 @@ document.addEventListener("pointerdown",event=>{
 document.addEventListener("click",resumeWithInteraction,{capture:true});
 document.addEventListener("keydown",resumeWithInteraction,{capture:true});
 
+const mastCopy=document.querySelector(".masthead .mast-copy");
+if(mastCopy&&!mastCopy.querySelector(".lab-back")){
+  const back=document.createElement("a");back.className="lab-back";
+  back.href="https://charming-conkies-a0a86c.netlify.app/";
+  back.textContent="\u2190";back.setAttribute("aria-label","Back to the institute / 연구소로 돌아가기");
+  mastCopy.prepend(back);
+}
 makeMenu();
 for(const sample of samples)sample.button.disabled=true;
 applyLanguage();
